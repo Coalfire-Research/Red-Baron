@@ -1,3 +1,6 @@
+// Public IP
+variable my_ip {}
+
 // AWS Access Key
 variable aws_akey {}
 

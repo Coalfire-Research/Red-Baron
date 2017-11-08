@@ -17,7 +17,7 @@ module "http_c2" {
 
   vpc_id = "${module.create_vpc.vpc_id}"
   subnet_id = "${module.create_vpc.subnet_id}"
-  my_ip = "116.87.3.233"
+  my_ip = "${var.my_ip}"
 }
 
 module "dns_c2" {
@@ -25,7 +25,7 @@ module "dns_c2" {
 
   vpc_id = "${module.create_vpc.vpc_id}"
   subnet_id = "${module.create_vpc.subnet_id}"
-  my_ip = "116.87.3.233"
+  my_ip = "${var.my_ip}"
 }
 
 module "http_rdir" {
