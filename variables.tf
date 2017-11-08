@@ -12,6 +12,9 @@ variable "aws_region" {
 // Linode API Key
 variable linode_key {}
 
+// Linode Root Password
+variable linode_root_password {}
+
 // GoDaddy API Key
 variable godaddy_key {}
 

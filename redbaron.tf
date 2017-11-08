@@ -31,14 +31,14 @@ module "dns_c2" {
 module "http_rdir" {
   source = "./modules/linode/http-rdir"
 
-  root_password = "yolo321"
+  root_password = "${var.linode_root_password}"
   http_c2_ips = "${module.http_c2.ips}"
 }
 
 module "dns_rdir" {
   source = "./modules/linode/dns-rdir"
 
-  root_password = "yolo321"
+  root_password = "${var.linode_root_password}"
   dns_c2_ips = "${module.dns_c2.ips}"
 }
 
