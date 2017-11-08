@@ -1,4 +1,4 @@
-# Red Barron
+# Red Baron
 
 - Linode Provider: https://github.com/LinodeContent/terraform-provider-linode
 - GoDaddy Provider: https://github.com/n3integration/terraform-godaddy
