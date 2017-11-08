@@ -1,0 +1,55 @@
+resource "aws_security_group" "http-c2" {
+  name = "http-c2"
+  description = "Security group created by Red Baron"
+  vpc_id = "${var.vpc_id}"
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["${var.my_ip}/32"]
+  }
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    /*
+    cidr_blocks = ["${linode_linode.http-rdir-1.ip_address}/32",
+                   "${linode_linode.http-rdir-2.ip_address}/32", 
+                   "${linode_linode.http-rdir-3.ip_address}/32", 
+                   "${var.my_ip}/32"]
+    */
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    /*
+    cidr_blocks = ["${linode_linode.http-rdir-1.ip_address}/32",
+                   "${linode_linode.http-rdir-2.ip_address}/32", 
+                   "${linode_linode.http-rdir-3.ip_address}/32", 
+                   "${var.my_ip}/32"]
+    */
+
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 53
+    to_port = 53
+    protocol = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
