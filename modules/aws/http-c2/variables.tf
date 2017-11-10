@@ -1,6 +1,3 @@
-// Needed to whitelist SSH access
-variable "my_ip" {}
-
 variable "subnet_id" {}
 
 variable "vpc_id" {}
@@ -19,10 +16,6 @@ variable "count" {
 
 variable "instance_type" {
   default = "t2.medium"
-}
-
-variable "region" {
-  default = "us-east-1"
 }
 
 variable "install" {

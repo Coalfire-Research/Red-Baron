@@ -2,18 +2,29 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
+data "aws_region" "current" {
+  current = true
+}
+
 resource "aws_key_pair" "http-c2" {
   key_name = "http-c2-key"
   public_key = "${file(var.ssh_public_key)}"
 }
 
 resource "aws_instance" "http-c2" {
+  // Currently, variables in provider fields are not supported :(
+  // This severely limits our ability to spin up instances in diffrent regions 
+  // https://github.com/hashicorp/terraform/issues/11578
+
+  //provider = "aws.${element(var.regions, count.index)}"
+
   count = "${var.count}"
+  
   tags = {
     Name = "http-c2-${count.index}"
   }
 
-  ami = "${lookup(var.amis, var.region)}"
+  ami = "${lookup(var.amis, data.aws_region.current.name)}"
   instance_type = "${var.instance_type}"
   key_name = "${aws_key_pair.http-c2.key_name}"
   vpc_security_group_ids = ["${aws_security_group.http-c2.id}"]

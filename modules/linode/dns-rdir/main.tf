@@ -12,7 +12,7 @@ resource "linode_linode" "dns-rdir" {
   kernel = "Latest 64 bit"
   name = "dns-rdir-${count.index}"
   group = "${var.group}"
-  region = "${var.region}"
+  region = "${lookup(var.available_regions, element(var.regions, count.index))}"
   size = "${var.size}"
   ssh_key = "${file(var.ssh_public_key)}"
   root_password = "${var.root_password}"

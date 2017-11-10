@@ -1,3 +1,11 @@
+terraform {
+  required_version = ">= 0.10.0"
+}
+
+data "external" "get_public_ip" {
+  program = ["bash", "./scripts/get_public_ip.sh" ]
+}
+
 resource "aws_security_group" "dns-c2" {
   name = "dns-c2"
   description = "Security group created by Red Baron"
@@ -11,7 +19,7 @@ resource "aws_security_group" "dns-c2" {
     cidr_blocks = ["${linode_linode.dns-rdir.ip_address}/32",
                    "${var.my_ip}/32"]
     */
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${data.external.get_public_ip.result["ip"]}/32"]
   }
   ingress {
     from_port = 53

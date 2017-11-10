@@ -1,6 +1,3 @@
-// Public IP
-variable my_ip {}
-
 // AWS Access Key
 variable aws_akey {}
 
@@ -8,7 +5,7 @@ variable aws_akey {}
 variable aws_skey {}
 
 // AWS Region
-variable "aws_region" {
+variable aws_region {
   default = "us-east-1"
 }
 

@@ -1,3 +1,11 @@
+terraform {
+  required_version = ">= 0.10.0"
+}
+
+data "external" "get_public_ip" {
+  program = ["bash", "./scripts/get_public_ip.sh" ]
+}
+
 resource "aws_security_group" "http-c2" {
   name = "http-c2"
   description = "Security group created by Red Baron"
@@ -7,7 +15,7 @@ resource "aws_security_group" "http-c2" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["${var.my_ip}/32"]
+    cidr_blocks = ["${data.external.get_public_ip.result["ip"]}/32"]
   }
   ingress {
     from_port = 80

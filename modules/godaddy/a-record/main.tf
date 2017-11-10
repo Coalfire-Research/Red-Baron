@@ -2,13 +2,14 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
-resource "godaddy_domain_record" "http-rdir-domain" {
-  domain   = "${var.domain}"
+resource "godaddy_domain_record" "a_record" {
+  count = "${var.count}"
+  domain   = "${element(var.domains, count.index)}"
 
   record {
     name = "@"
     type = "A"
-    data = "${var.ip_address}"
+    data = "${element(var.data, count.index)}"
     ttl = 600
   }
 
