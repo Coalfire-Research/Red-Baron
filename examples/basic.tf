@@ -100,7 +100,7 @@ module "a_record" {
 module "ns_record" {
   source = "./modules/godaddy/ns-record"
 
-  domains = ["dommain3.com"]
+  domains = ["domain3.com"]
   data = "${module.dns_rdir.ips}"
 }
 
