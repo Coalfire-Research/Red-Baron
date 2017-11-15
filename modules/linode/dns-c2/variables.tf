@@ -1,13 +1,3 @@
-variable "root_password" {}
-
-variable "ssh_private_key" {
-  default = "./ssh_keys/dns_rdir"
-}
-
-variable "ssh_public_key" {
-  default = "./ssh_keys/dns_rdir.pub"
-}
-
 variable "install" {
   type = "list"
   default = ["./scripts/c2_core_deps.sh"]

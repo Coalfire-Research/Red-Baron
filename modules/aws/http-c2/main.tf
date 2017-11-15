@@ -6,9 +6,16 @@ data "aws_region" "current" {
   current = true
 }
 
+resource "tls_private_key" "ssh" {
+  count = "${var.count}"
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
 resource "aws_key_pair" "http-c2" {
-  key_name = "http-c2-key"
-  public_key = "${file(var.ssh_public_key)}"
+  count = "${var.count}"
+  key_name = "http-c2-key-${count.index}"
+  public_key = "${tls_private_key.ssh.*.public_key_openssh[count.index]}"
 }
 
 resource "aws_instance" "http-c2" {
@@ -21,12 +28,12 @@ resource "aws_instance" "http-c2" {
   count = "${var.count}"
   
   tags = {
-    Name = "http-c2-${count.index}"
+    Name = "http-c2-${count.index + 1}"
   }
 
-  ami = "${lookup(var.amis, data.aws_region.current.name)}"
+  ami = "${var.amis[data.aws_region.current.name]}"
   instance_type = "${var.instance_type}"
-  key_name = "${aws_key_pair.http-c2.key_name}"
+  key_name = "${aws_key_pair.http-c2.*.key_name[count.index]}"
   vpc_security_group_ids = ["${aws_security_group.http-c2.id}"]
   subnet_id = "${var.subnet_id}"
   associate_public_ip_address = true
@@ -37,8 +44,17 @@ resource "aws_instance" "http-c2" {
     connection {
         type = "ssh"
         user = "admin"
-        private_key = "${file(var.ssh_private_key)}"
+        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
     }
+  }
+
+  provisioner "local-exec" {
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/http_c2_${self.public_ip} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/http_c2_${self.public_ip}.pub" 
+  }
+
+  provisioner "local-exec" {
+    when = "destroy"
+    command = "rm ./ssh_keys/http_c2_${self.public_ip}*"
   }
 
 }

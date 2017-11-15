@@ -2,14 +2,6 @@ variable "subnet_id" {}
 
 variable "vpc_id" {}
 
-variable "ssh_private_key" {
-  default = "./ssh_keys/http_c2"
-}
-
-variable "ssh_public_key" {
-  default = "./ssh_keys/http_c2.pub"
-}
-
 variable "count" {
   default = 1
 }

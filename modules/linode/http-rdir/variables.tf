@@ -1,13 +1,3 @@
-variable "root_password" {}
-
-variable "ssh_private_key" {
-  default = "./ssh_keys/http_rdir"
-}
-
-variable "ssh_public_key" {
-  default = "./ssh_keys/http_rdir.pub"
-}
-
 variable "http_c2_ips" {
   type = "list"
 }

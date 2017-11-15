@@ -6,14 +6,6 @@ variable "http_c2_ips" {
   type = "list"
 }
 
-variable "ssh_private_key" {
-  default = "./ssh_keys/http_c2"
-}
-
-variable "ssh_public_key" {
-  default = "./ssh_keys/http_c2.pub"
-}
-
 variable "count" {
   default = 1
 }

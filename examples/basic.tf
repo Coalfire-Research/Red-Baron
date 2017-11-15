@@ -1,5 +1,5 @@
 /*
-The simplest and most common scenario:
+The simplest and (probably) most common scenario:
 
 - 1 HTTP C2
 - 2 HTTP Redirectors
@@ -11,7 +11,7 @@ The simplest and most common scenario:
 
 - C2s hosted on AWS
 - Redirectors hosted on Linode
-- Domains managed by GoDaddy
+- Domains managed by Route53
 
                    +----------------------+                            +----------------------+
                    |                      |                            |                      |
@@ -40,7 +40,7 @@ The simplest and most common scenario:
            |                                     |                                 |
            +                                     +                                 +
 
-      domain.com                            domain2.com                      dns.domain3.com
+    theredbaroness.com                 pizzapastalasagna.com              dns.goodyearbook.com
 */
 
 // Minimum required TF version is 0.10.0
@@ -77,7 +77,6 @@ module "http_rdir" {
   source = "./modules/linode/http-rdir"
 
   count = 2
-  root_password = "${var.linode_root_password}"
   http_c2_ips = "${module.http_c2.ips}"
   regions = ["UK", "SG"]
 }
@@ -85,23 +84,59 @@ module "http_rdir" {
 module "dns_rdir" {
   source = "./modules/linode/dns-rdir"
 
-  root_password = "${var.linode_root_password}"
   dns_c2_ips = "${module.dns_c2.ips}"
 }
 
-module "a_record" {
-  source = "./modules/godaddy/a-record"
-
-  count = 2
-  domains = ["domain.com", "domain2.com"]
-  data = "${module.http_rdir.ips}"
+module "http_rdir1_records" {
+  source = "./modules/aws/route53/create-record"
+  domain = "theredbaroness.com"
+  type = "A"
+  records = {
+    "theredbaroness.com" = "${module.http_rdir.ips[0]}"
+  }
 }
 
-module "ns_record" {
-  source = "./modules/godaddy/ns-record"
+module "http_rdir2_records" {
+  source = "./modules/aws/route53/create-record"
+  domain = "pizzapastalasagna.com"
+  type = "A"
+  records = {
+    "pizzapastalasagna.com" = "${module.http_rdir.ips[1]}"
+  }
+}
 
-  domains = ["domain3.com"]
-  data = "${module.dns_rdir.ips}"
+module "dns_rdir_records" {
+  source = "./modules/aws/route53/create-record"
+  count = 2
+  domain = "goodyearbook.com"
+  type = "A"
+  records = {
+    "goodyearbook.com"     = "${module.dns_rdir.ips[0]}"
+    "ns1.goodyearbook.com" = "${module.dns_rdir.ips[0]}"
+  }
+}
+
+module "dns_rdir_ns_record" {
+  source = "./modules/aws/route53/create-record"
+  domain = "goodyearbook.com"
+  type = "NS"
+  records = {
+    "dns.goodyearbook.com" = "ns1.goodyearbook.com"
+  }
+}
+
+module "create_certs" {
+  source = "./modules/letsencrypt/create-cert-dns"
+
+  count = 2
+  domains = ["theredbaroness.com", "pizzapastalasagna.com"]
+
+  server_url = "production"
+
+  subject_alternative_names = {
+    "theredbaroness.com" = []
+    "pizzapastalasagna.com" = []
+  }
 }
 
 output "http-c2-ips" {
@@ -121,9 +156,9 @@ output "dns-rdir-ips" {
 }
 
 output "http_rdir_domains" {
-  value = "${module.a_record.records}"
+  value = "${merge(module.http_rdir1_records.records, module.http_rdir2_records.records)}"
 }
 
 output "dns_rdir_domains" {
-  value = "${module.ns_record.records}"
+  value = "${merge(module.dns_rdir_records.records, module.dns_rdir_ns_record.records)}"
 }

@@ -6,9 +6,16 @@ data "aws_region" "current" {
   current = true
 }
 
+resource "tls_private_key" "ssh" {
+  count = "${var.count}"
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
 resource "aws_key_pair" "dns-rdir" {
-  key_name = "dns-rdir-key"
-  public_key = "${file(var.ssh_public_key)}"
+  count = "${var.count}"
+  key_name = "dns-rdir-key-${count.index}"  
+  public_key = "${tls_private_key.ssh.*.public_key_openssh[count.index]}"
 }
 
 resource "aws_instance" "dns-rdir" {
@@ -21,27 +28,37 @@ resource "aws_instance" "dns-rdir" {
   count = "${var.count}"
 
   tags = {
-    Name = "dns-rdir-${count.index}"
+    Name = "dns-rdir-${count.index + 1}"
   }
 
-  ami = "${lookup(var.amis, data.aws_region.current.name)}"
+  ami = "${var.amis[data.aws_region.current.name]}"
   instance_type = "${var.instance_type}"
-  key_name = "${aws_key_pair.dns-rdir.key_name}"
+  key_name = "${aws_key_pair.dns-rdir.*.key_name[count.index]}"
   vpc_security_group_ids = ["${aws_security_group.dns-rdir.id}"]
   subnet_id = "${var.subnet_id}"
   associate_public_ip_address = true
 
   provisioner "remote-exec" {
     inline = [
-        "apt-get update",
-        "apt-get install -y tmux socat",
-        "tmux new -d \"socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.dns_c2_ips, count.index)}\""
+        "sudo apt-get update",
+        "sudo apt-get install -y tmux socat",
+        "tmux new -d \"sudo socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.dns_c2_ips, count.index)}\""
     ]
 
     connection {
         type = "ssh"
         user = "admin"
-        private_key = "${file(var.ssh_private_key)}"
+        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
     }
   }
+
+  provisioner "local-exec" {
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/dns_rdir_${self.public_ip} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/dns_rdir_${self.public_ip}.pub" 
+  }
+
+  provisioner "local-exec" {
+    when = "destroy"
+    command = "rm ./ssh_keys/dns_rdir_${self.public_ip}*"
+  }
+
 }
