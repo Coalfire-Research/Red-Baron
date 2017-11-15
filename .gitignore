@@ -1,3 +1,9 @@
-.terraform
-terraform.tfvars
-terraform.tfstate*
+*
+!.gitignore
+!certificates
+!examples
+!modules
+!scripts
+!ssh_keys
+!terraform.d
+!README.md

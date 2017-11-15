@@ -15,14 +15,14 @@ variable "provider" {
 }
 
 variable "server_url" {
-  default ="staging"
+  default = "production"
 }
 
 variable "server_urls" {
   type = "map"
   default = {
     "staging" = "https://acme-staging.api.letsencrypt.org/directory"
-    "production" = "https://acme.api.letsencrypt.org/directory"
+    "production" = "https://acme-v01.api.letsencrypt.org/directory"
   }
 }
 

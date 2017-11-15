@@ -131,8 +131,6 @@ module "create_certs" {
   count = 2
   domains = ["theredbaroness.com", "pizzapastalasagna.com"]
 
-  server_url = "production"
-
   subject_alternative_names = {
     "theredbaroness.com" = []
     "pizzapastalasagna.com" = []
