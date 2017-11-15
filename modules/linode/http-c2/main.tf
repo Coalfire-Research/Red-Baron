@@ -30,7 +30,7 @@ resource "linode_linode" "http-c2" {
   root_password = "${random_string.password.*.result[count.index]}"
 
   provisioner "remote-exec" {
-    scripts = "${var.install}"
+    scripts = "${concat(list("./scripts/core_deps.sh"), var.install)}"
 
     connection {
         type = "ssh"

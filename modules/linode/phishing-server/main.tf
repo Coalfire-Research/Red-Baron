@@ -14,7 +14,7 @@ resource "tls_private_key" "ssh" {
   rsa_bits = 4096
 }
 
-resource "linode_linode" "http-rdir" {
+resource "linode_linode" "phishing-server" {
   // Due to a current limitation the count parameter cannot be a dynamic value :(
   // https://github.com/hashicorp/terraform/issues/14677
   // count = "${length(var.http_c2_ips)}"
@@ -22,7 +22,7 @@ resource "linode_linode" "http-rdir" {
   count = "${var.count}"
   image = "Debian 9"
   kernel = "Latest 64 bit"
-  name = "http-rdir-${count.index + 1}"
+  name = "phishing-server-${count.index + 1}"
   group = "${var.group}"
   region = "${var.available_regions[var.regions[count.index]]}"
   size = "${var.size}"
@@ -31,11 +31,10 @@ resource "linode_linode" "http-rdir" {
 
   provisioner "remote-exec" {
     inline = [
-        "apt-get update",
-        "apt-get install -y tmux socat apache2",
-        "a2enmod rewrite proxy proxy_http ssl",
-        "systemctl stop apache2",
-        "tmux new -d \"socat TCP4-LISTEN:80,fork TCP4:${element(var.http_c2_ips, count.index)}:80\" ';' split \"socat TCP4-LISTEN:443,fork TCP4:${element(var.http_c2_ips, count.index)}:443\""
+      "apt-get update",
+      "apt-get install -y apache2 certbot",
+      "a2enmod ssl",
+      "systemctl stop apache2"
     ]
 
     connection {
@@ -46,12 +45,12 @@ resource "linode_linode" "http-rdir" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/http_rdir_${self.ip_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/http_rdir_${self.ip_address}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/phishing_server_${self.ip_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/phishing_server_${self.ip_address}.pub" 
   }
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./ssh_keys/http_rdir_${self.ip_address}*"
+    command = "rm ./ssh_keys/phishing_server_${self.ip_address}*"
   }
 
 }

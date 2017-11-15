@@ -1,8 +1,3 @@
-variable "install" {
-  type = "list"
-  default = []
-}
-
 variable "count" {
   default = 1
 }

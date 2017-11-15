@@ -10,11 +10,6 @@ variable "instance_type" {
   default = "t2.medium"
 }
 
-variable "install" {
-  type = "list"
-  default = []
-}
-
 /*
 variable "install" {
   type = "map"

@@ -12,13 +12,13 @@ resource "tls_private_key" "ssh" {
   rsa_bits = 4096
 }
 
-resource "aws_key_pair" "http-rdir" {
+resource "aws_key_pair" "phishing-server" {
   count = "${var.count}"
-  key_name = "http-rdir-key-${count.index}"  
+  key_name = "phishing-server-key-${count.index}"
   public_key = "${tls_private_key.ssh.*.public_key_openssh[count.index]}"
 }
 
-resource "aws_instance" "http-rdir" {
+resource "aws_instance" "phishing-server" {
   // Currently, variables in provider fields are not supported :(
   // This severely limits our ability to spin up instances in diffrent regions 
   // https://github.com/hashicorp/terraform/issues/11578
@@ -28,23 +28,22 @@ resource "aws_instance" "http-rdir" {
   count = "${var.count}"
   
   tags = {
-    Name = "http-rdir-${count.index + 1}"
+    Name = "phishing-server-${count.index + 1}"
   }
 
   ami = "${var.amis[data.aws_region.current.name]}"
   instance_type = "${var.instance_type}"
-  key_name = "${aws_key_pair.http-rdir.*.key_name[count.index]}"
-  vpc_security_group_ids = ["${aws_security_group.http-rdir.id}"]
+  key_name = "${aws_key_pair.phishing-server.*.key_name[count.index]}"
+  vpc_security_group_ids = ["${aws_security_group.phishing-server.id}"]
   subnet_id = "${var.subnet_id}"
   associate_public_ip_address = true
 
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y tmux socat apache2",
-      "sudo a2enmod rewrite proxy proxy_http ssl",
-      "sudo systemctl stop apache2",
-      "tmux new -d \"sudo socat TCP4-LISTEN:80,fork TCP4:${element(var.http_c2_ips, count.index)}:80\" ';' split \"sudo socat TCP4-LISTEN:443,fork TCP4:${element(var.http_c2_ips, count.index)}:443\""
+      "sudo apt-get install -y apache2 certbot",
+      "sudo a2enmod ssl",
+      "sudo systemctl stop apache2"
     ]
 
     connection {
@@ -55,12 +54,12 @@ resource "aws_instance" "http-rdir" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/http_rdir_${self.public_ip} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/http_rdir_${self.public_ip}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/phishing_server_${self.public_ip} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/phishing_server_${self.public_ip}.pub" 
   }
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./ssh_keys/http_rdir_${self.public_ip}*"
+    command = "rm ./ssh_keys/phishing_server_${self.public_ip}*"
   }
 
 }

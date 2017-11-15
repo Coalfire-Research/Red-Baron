@@ -1,6 +1,6 @@
 variable "install" {
   type = "list"
-  default = ["./scripts/c2_core_deps.sh"]
+  default = []
 }
 
 variable "count" {

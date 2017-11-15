@@ -63,7 +63,7 @@ module "http_c2" {
   vpc_id = "${module.create_vpc.vpc_id}"
   subnet_id = "${module.create_vpc.subnet_id}"
 
-  //install = ["./scripts/c2_core_deps.sh", "./scripts/empire.sh"]
+  //install = ["./scripts/empire.sh"]
 }
 
 module "dns_c2" {
@@ -88,7 +88,7 @@ module "dns_rdir" {
 }
 
 module "http_rdir1_records" {
-  source = "./modules/aws/route53/create-record"
+  source = "./modules/aws/create-dns-record"
   domain = "theredbaroness.com"
   type = "A"
   records = {
@@ -97,7 +97,7 @@ module "http_rdir1_records" {
 }
 
 module "http_rdir2_records" {
-  source = "./modules/aws/route53/create-record"
+  source = "./modules/aws/create-dns-record"
   domain = "pizzapastalasagna.com"
   type = "A"
   records = {
@@ -106,7 +106,7 @@ module "http_rdir2_records" {
 }
 
 module "dns_rdir_records" {
-  source = "./modules/aws/route53/create-record"
+  source = "./modules/aws/create-dns-record"
   count = 2
   domain = "goodyearbook.com"
   type = "A"
@@ -117,7 +117,7 @@ module "dns_rdir_records" {
 }
 
 module "dns_rdir_ns_record" {
-  source = "./modules/aws/route53/create-record"
+  source = "./modules/aws/create-dns-record"
   domain = "goodyearbook.com"
   type = "NS"
   records = {
