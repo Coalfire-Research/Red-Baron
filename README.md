@@ -1,6 +1,6 @@
 # Red Baron
 
-Red Baron is a set of [modules](https://www.terraform.io/docs/modules/index.html) and custom/third-party providers for [Terraform](https://www.terraform.io/) which tries to automate infrastructure creation, bootstrapping and teardown for Red Teams.
+Red Baron is a set of [modules](https://www.terraform.io/docs/modules/index.html) and custom/third-party providers for [Terraform](https://www.terraform.io/) which tries to automate creating resilient and agile infrastructure for Red Teams.
 
 # Third-party Providers
 
@@ -10,7 +10,9 @@ This repository comes with a few pre-compiled [Terraform](https://www.terraform.
 - GoDaddy Provider: https://github.com/n3integration/terraform-godaddy
 - ACME Provider: https://github.com/paybyphone/terraform-provider-acme
 
-# Acknowledgments
+# Author and Acknowledgments
+
+Author: Marcello Salvati ([@byt3bl33d3r](https://twitter.com/byt3bl33d3r))
 
 The initial inspiration for this came from [@_RastaMouse's](https://twitter.com/_RastaMouse) excellent *'Automated Red Team Infrastructure Deployment with Terraform'* blog posts series:
 - [Part 1](https://rastamouse.me/2017/08/automated-red-team-infrastructure-deployment-with-terraform---part-1/)
