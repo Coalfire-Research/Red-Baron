@@ -12,11 +12,11 @@ This repository comes with a few pre-compiled [Terraform](https://www.terraform.
 
 # Acknowledgments
 
-The initial inspiration for this came from @rasta-mouse's excellent 'Automated Red Team Infrastructure Deployment with Terraform' blog posts series:
+The initial inspiration for this came from [@_RastaMouse's](https://twitter.com/_RastaMouse) excellent *'Automated Red Team Infrastructure Deployment with Terraform'* blog posts series:
 - [Part 1](https://rastamouse.me/2017/08/automated-red-team-infrastructure-deployment-with-terraform---part-1/)
 - [Part 2](https://rastamouse.me/2017/09/automated-red-team-infrastructure-deployment-with-terraform---part-2/)
 
-And @bluscreenofjeff's amazing [Red Team Infrastructure Wiki](https://github.com/bluscreenofjeff/Red-Team-Infrastructure-Wiki)
+And [@bluscreenofjeff's](https://twitter.com/bluscreenofjeff) amazing [Red Team Infrastructure Wiki](https://github.com/bluscreenofjeff/Red-Team-Infrastructure-Wiki)
 
 Both of these resources were referenced heavily while building this.
 
