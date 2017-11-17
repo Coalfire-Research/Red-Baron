@@ -45,7 +45,7 @@ Both of these resources were referenced heavily while building this.
 
 # Tool & Module Documentation
 
-For detailed documentation on the tool and each module please see Red Baron's [wiki](https://github.com/coalfire/pentest-red-baron).
+For detailed documentation on the tool and each module please see Red Baron's [wiki](https://github.com/coalfire/pentest-red-baron/wiki).
 
 Most of the documentation assumes you are familiar with [Terraform](https://www.terraform.io/) itself, [Terraform's](https://www.terraform.io/) documentation can be found [here](https://www.terraform.io/docs/index.html).
 
@@ -59,4 +59,4 @@ Most of the documentation assumes you are familiar with [Terraform](https://www.
 
 - LetsEncrypt cert creation using the TLS challenge currently doesn't work due to the third-party terraform ACME plugin implementation (https://github.com/paybyphone/terraform-provider-acme#using-http-and-tls-challenges). (I probably could get it to work with some extra tinkering)
 
-- GoDaddy module replace **all** of the DNS entries instead of adding the specified record to the existing zone file due to the implementation of the third-party provider (https://github.com/n3integration/terraform-godaddy). (Not ideal and definitely need to work on this, but it will due for now)
+- The GoDaddy modules replace **all** of the DNS entries instead of adding the specified record to the existing zone file due to the implementation of the third-party provider (https://github.com/n3integration/terraform-godaddy). (Not ideal and definitely need to work on this, but it will due for now)
