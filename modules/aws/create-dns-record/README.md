@@ -1,6 +1,8 @@
 # create-dns-record
 
-Example:
+Adds records to a domain using AWS Route53
+
+# Example
 
 ```hcl
 module "create_a_record" {
