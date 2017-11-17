@@ -6,8 +6,10 @@ Creates a DNS Redirector server in AWS.
 
 ```hcl
 module "dns_rdir" {
-  source = "./modules/linode/dns-rdir"
+  source = "./modules/aws/dns-rdir"
 
+  vpc_id    = "<VPC ID>"
+  subnet_id = "<Subnet ID>"
   dns_c2_ips = ["192.168.0.1"]
 }
 ```
