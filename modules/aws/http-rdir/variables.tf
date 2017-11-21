@@ -2,7 +2,7 @@ variable "subnet_id" {}
 
 variable "vpc_id" {}
 
-variable "http_c2_ips" {
+variable "redirect_to" {
   type = "list"
 }
 

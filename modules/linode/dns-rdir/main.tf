@@ -17,7 +17,7 @@ resource "tls_private_key" "ssh" {
 resource "linode_linode" "dns-rdir" {
   // Due to a current limitation the count parameter cannot be a dynamic value :(
   // https://github.com/hashicorp/terraform/issues/14677
-  // count = "${length(var.dns_c2_ips)}"
+  // count = "${length(var.redirect_to)}"
 
   count = "${var.count}"
   image = "Debian 9"
@@ -33,7 +33,7 @@ resource "linode_linode" "dns-rdir" {
     inline = [
         "apt-get update",
         "apt-get install -y tmux socat",
-        "tmux new -d \"socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.dns_c2_ips, count.index)}\""
+        "tmux new -d \"socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.redirect_to, count.index)}\""
     ]
 
     connection {

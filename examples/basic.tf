@@ -77,14 +77,14 @@ module "http_rdir" {
   source = "./modules/linode/http-rdir"
 
   count = 2
-  http_c2_ips = "${module.http_c2.ips}"
+  redirect_to = "${module.http_c2.ips}"
   regions = ["UK", "SG"]
 }
 
 module "dns_rdir" {
   source = "./modules/linode/dns-rdir"
 
-  dns_c2_ips = "${module.dns_c2.ips}"
+  redirect_to = "${module.dns_c2.ips}"
 }
 
 module "http_rdir1_records" {

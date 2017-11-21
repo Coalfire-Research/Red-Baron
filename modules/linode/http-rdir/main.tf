@@ -17,7 +17,7 @@ resource "tls_private_key" "ssh" {
 resource "linode_linode" "http-rdir" {
   // Due to a current limitation the count parameter cannot be a dynamic value :(
   // https://github.com/hashicorp/terraform/issues/14677
-  // count = "${length(var.http_c2_ips)}"
+  // count = "${length(var.redirect_to)}"
 
   count = "${var.count}"
   image = "Debian 9"
@@ -35,7 +35,7 @@ resource "linode_linode" "http-rdir" {
         "apt-get install -y tmux socat apache2",
         "a2enmod rewrite proxy proxy_http ssl",
         "systemctl stop apache2",
-        "tmux new -d \"socat TCP4-LISTEN:80,fork TCP4:${element(var.http_c2_ips, count.index)}:80\" ';' split \"socat TCP4-LISTEN:443,fork TCP4:${element(var.http_c2_ips, count.index)}:443\""
+        "tmux new -d \"socat TCP4-LISTEN:80,fork TCP4:${element(var.redirect_to, count.index)}:80\" ';' split \"socat TCP4-LISTEN:443,fork TCP4:${element(var.redirect_to, count.index)}:443\""
     ]
 
     connection {

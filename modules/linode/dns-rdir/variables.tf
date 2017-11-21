@@ -1,4 +1,4 @@
-variable "dns_c2_ips" {
+variable "redirect_to" {
   type = "list"
 }
 

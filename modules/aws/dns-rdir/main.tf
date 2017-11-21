@@ -42,7 +42,7 @@ resource "aws_instance" "dns-rdir" {
     inline = [
         "sudo apt-get update",
         "sudo apt-get install -y tmux socat",
-        "tmux new -d \"sudo socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.dns_c2_ips, count.index)}\""
+        "tmux new -d \"sudo socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.redirect_to, count.index)}\""
     ]
 
     connection {

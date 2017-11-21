@@ -1,6 +1,6 @@
 # phishing-server
 
-Creates an instance in AWS to be used as a phishing server. SSH keys for each instance will be outputted to the ssh_keys folder.
+Creates an instance in Linode to be used as a phishing server. SSH keys for each instance will be outputted to the ssh_keys folder.
 
 # Example
 

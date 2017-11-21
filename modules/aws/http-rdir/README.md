@@ -10,7 +10,7 @@ module "http_rdir" {
 
   vpc_id    = "<VPC ID>"
   subnet_id = "<Subnet ID>"
-  http_c2_ips = ["192.168.0.1"]
+  redirect_to = ["192.168.0.1"]
 }
 ```
 
@@ -20,7 +20,7 @@ module "http_rdir" {
 |---------------------------| -------- | ---------- | -----------
 |`vpc_id`                   | Yes      | String     | ID of VPC to create instance in.
 |`subnet_id`                | Yes      | String     | Subnet ID to create instance in.
-|`http_c2_ips`              | Yes      | List       | List of HTTP C2 IPs to redirect HTTP traffic to.
+|`redirect_to`              | Yes      | List       | List of IPs to redirect HTTP traffic to.
 |`count`                    | No       | Integer    | Number of instances to launch. Defaults to 1.
 |`instance_type`            | No       | String     | Instance type to launch. Defaults to "t2.medium".
 

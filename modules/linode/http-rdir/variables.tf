@@ -1,4 +1,4 @@
-variable "http_c2_ips" {
+variable "redirect_to" {
   type = "list"
 }
 

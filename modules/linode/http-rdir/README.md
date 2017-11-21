@@ -8,7 +8,7 @@ Creates a HTTP Redirector server in Linode. SSH keys for each instance will be o
 module "http_rdir" {
   source = "./modules/linode/http-rdir"
 
-  http_c2_ips = ["192.168.0.1"]
+  redirect_to = ["192.168.0.1"]
 }
 ```
 
@@ -16,9 +16,9 @@ module "http_rdir" {
 
 | Name                      | Required | Value Type | Description
 |---------------------------| -------- | ---------- | -----------
-|`http_c2_ips`              | Yes      | List       | List of HTTP C2 IPs to redirect HTTP traffic to.
 |`count`                    | No       | Integer    | Number of instances to launch. Defaults to 1.
 |`size`                     | No       | Integer    | Linode size to launch. Defaults to 1024.
+|`redirect_to`              | Yes      | List       | List of IPs to redirect HTTP traffic to.
 |`regions`                  | No       | List       | Regions to create Linode(s) in. Defaults to NJ. Accepted values are NJ, CA, TX, GA, UK, JP, JP2, SG and DE.
 |`group`                    | No       | String     | Group name for created Linode(s). Defaults to "Red Baron"
 
