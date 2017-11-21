@@ -1,6 +1,6 @@
 # dns-c2
 
-Creates a DNS C2 server in AWS.
+Creates a DNS C2 server in AWS. SSH keys for each instance will be outputted to the ssh_keys folder.
 
 # Example
 

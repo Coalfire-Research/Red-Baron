@@ -1,6 +1,6 @@
 # http-rdir
 
-Creates a HTTP Redirector server in AWS.
+Creates a HTTP Redirector server in AWS. SSH keys for each instance will be outputted to the ssh_keys folder.
 
 # Example
 
