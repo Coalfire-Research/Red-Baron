@@ -1,9 +1,3 @@
-*
-!.gitignore
-!certificates
-!examples
-!modules
-!scripts
-!ssh_keys
-!terraform.d
-!README.md
+.terraform
+*.tfstate*
+*.tfvars

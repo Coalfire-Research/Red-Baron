@@ -1,5 +1,4 @@
 /*
-The simplest and (probably) most common scenario:
 
 - 1 HTTP C2
 - 2 HTTP Redirectors
