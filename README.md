@@ -1,6 +1,6 @@
 # Red Baron
 
-Red Baron is a set of [modules](https://www.terraform.io/docs/modules/index.html) and custom/third-party providers for [Terraform](https://www.terraform.io/) which tries to automate creating resilient and agile infrastructure for Red Teams.
+Red Baron is a set of [modules](https://www.terraform.io/docs/modules/index.html) and custom/third-party providers for [Terraform](https://www.terraform.io/) which tries to automate creating resilient, disposable, secure and agile infrastructure for Red Teams.
 
 # Third-party Providers
 
