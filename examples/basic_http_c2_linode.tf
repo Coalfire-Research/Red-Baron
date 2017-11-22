@@ -10,10 +10,10 @@ module "http_c2" {
   // 1 http C2 ha. ha. ha... 2 http C2s ha. ha. ha... 3 http C2s ha. ha. ha...
   //count = 2
 
-  // Wanna auto install empire?
+  // Wanna install empire?
   //install = ["./scripts/empire.sh"]
 
-  // Wanna auto install metasploit?
+  // Wanna install metasploit?
   //install = ["./scripts/metasploit.sh"]
 
   // Wanna install CS?

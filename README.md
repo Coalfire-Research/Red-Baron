@@ -36,7 +36,7 @@ Both of these resources were referenced heavily while building this.
 #~ export GODADDY_API_SECRET="gdsecret"
 
 # copy an infrastructure configuration file from the examples folder to the root directory and modify it to your needs
-#~ cp examples/basic.tf .
+#~ cp examples/complete_c2 .
 
 #~ terraform init
 #~ terraform plan
