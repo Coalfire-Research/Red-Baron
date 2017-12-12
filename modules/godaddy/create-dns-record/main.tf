@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
-resource "godaddy_domain_record" "a_record" {
+resource "godaddy_domain_record" "record" {
   count = "${var.count}"
   domain   = "${var.domain}"
 
