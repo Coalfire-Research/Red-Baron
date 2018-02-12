@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.10.0"
+}
+
 resource "tls_private_key" "ssh" {
   count = "${var.count}"
   algorithm = "RSA"
