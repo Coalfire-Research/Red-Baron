@@ -32,6 +32,7 @@ Both of these resources were referenced heavily while building this.
 #~ export AWS_SECRET_ACCESS_KEY="secretkey"
 #~ export AWS_DEFAULT_REGION="us-east-1"
 #~ export LINODE_API_KEY="apikey"
+#~ export DIGITALOCEAN_TOKEN="token"
 #~ export GODADDY_API_KEY="gdkey"
 #~ export GODADDY_API_SECRET="gdsecret"
 
