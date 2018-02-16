@@ -41,8 +41,6 @@ Both of these resources were referenced heavily while building this.
 #~ export GODADDY_API_KEY="gdkey"
 #~ export GODADDY_API_SECRET="gdsecret"
 
-# Google requires creating a project under the Google Cloud Compute console. Create a project, generate a service key, and download to the google_keys dir. Modify the variable.tf and main.tf files to reference these files to reflect your service account key json file and your project-id. Google also requires setting up firewall rules: Settings -> VPC network -> Firewall rules. Create a new rule: network=default, priority=1, direction=ingress, action on match=allow, ip-range=0.0.0.0/24, protocols:ports=tcp:22,tcp:80,tcp:443
-
 # copy an infrastructure configuration file from the examples folder to the root directory and modify it to your needs
 #~ cp examples/complete_c2.tf .
 
