@@ -49,7 +49,7 @@ Both of these resources were referenced heavily while building this.
 #~ terraform apply
 ```
 Google Cloud Compute requires creating a project under the Google Cloud console. 
-- Create a project, generate a service key, and download the json file to the google_keys dir. 
+- [Create a project](https://cloud.google.com/dataproc/docs/guides/setup-project), generate a service key, and download the json file to the google_keys dir. 
 - Modify the variable.tf and main.tf files to reference your service account key json file and your project-id. 
 - Set up firewall rules in the Google Cloud Console: Settings -> VPC network -> Firewall rules. Create a new rule: network=default, priority=1, direction=ingress, action on match=allow, ip-range=0.0.0.0/24, protocols:ports=tcp:22,tcp:80,tcp:443
 
