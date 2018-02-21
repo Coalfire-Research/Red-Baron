@@ -48,6 +48,7 @@ Both of these resources were referenced heavily while building this.
 #~ terraform plan
 #~ terraform apply
 ```
+## Google Cloud Compute
 Google Cloud Compute requires creating a project under the Google Cloud console. 
 - [Create a project](https://cloud.google.com/dataproc/docs/guides/setup-project), generate a service key, and download the json file to the google_keys dir. 
 - Modify the variable.tf and main.tf files to reference your service account key json file and your project-id. 
