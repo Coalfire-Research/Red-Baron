@@ -13,11 +13,16 @@ resource "tls_private_key" "ssh" {
   rsa_bits = 4096
 }
 
+resource "random_id" "server" {
+  count = "${var.count}"
+  byte_length = 4
+}
+
 resource "google_compute_instance" "dns-rdir" {
   count = "${var.count}"
   machine_type = "${var.machine_type}"
-  name = "dns-rdir-${count.index + 1}"
-  zone = "${var.available_zones[var.zones[count.index]]}"
+  name = "dns-rdir-${random_id.server.*.hex[count.index]}"
+  zone = "${var.available_zones[element(var.zones, count.index)]}"
   can_ip_forward = true
 
   boot_disk {

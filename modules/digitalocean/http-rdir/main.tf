@@ -2,6 +2,11 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
+resource "random_id" "server" {
+  count = "${var.count}"
+  byte_length = 4
+}
+
 resource "tls_private_key" "ssh" {
   count = "${var.count}"
   algorithm = "RSA"
@@ -10,15 +15,15 @@ resource "tls_private_key" "ssh" {
 
 resource "digitalocean_ssh_key" "ssh_key" {
   count = "${var.count}"
-  name  = "http-rdir-key-${var.count}"
+  name  = "http-rdir-key-${random_id.server.*.hex[count.index]}"
   public_key = "${tls_private_key.ssh.*.public_key_openssh[count.index]}"
 }
 
 resource "digitalocean_droplet" "http-rdir" {
   count = "${var.count}"
   image = "debian-9-x64"
-  name = "http-rdir-${count.index + 1}"
-  region = "${var.available_regions[var.regions[count.index]]}"
+  name = "http-rdir-${random_id.server.*.hex[count.index]}"
+  region = "${var.available_regions[element(var.regions, count.index)]}"
   ssh_keys = ["${digitalocean_ssh_key.ssh_key.*.id[count.index]}"]
   size = "${var.size}"
 

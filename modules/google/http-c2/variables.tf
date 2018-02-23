@@ -7,7 +7,7 @@ variable "machine_type" {
 }
 
 variable "project" {
-  default = "project-name-11111"
+  default = "Red-Baron"
 }
 
 variable "zones" {
@@ -80,8 +80,4 @@ variable "available_zones" {
     "Australia-2" = "australia-southeast1-b"
     "Australia-3" = "australia-southeast1-c"
   }
-}
-
-variable "group" {
-  default = "Red Baron"
 }

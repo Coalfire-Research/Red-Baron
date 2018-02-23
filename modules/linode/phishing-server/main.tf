@@ -2,6 +2,11 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
+resource "random_id" "server" {
+  count = "${var.count}"
+  byte_length = 4
+}
+
 resource "random_string" "password" {
   count = "${var.count}"
   length = 16
@@ -22,9 +27,9 @@ resource "linode_linode" "phishing-server" {
   count = "${var.count}"
   image = "Debian 9"
   kernel = "Latest 64 bit"
-  name = "phishing-server-${count.index + 1}"
+  name = "phishing-server-${random_id.server.*.hex[count.index]}"
   group = "${var.group}"
-  region = "${var.available_regions[var.regions[count.index]]}"
+  region = "${var.available_regions[element(var.regions, count.index)]}"
   size = "${var.size}"
   ssh_key = "${tls_private_key.ssh.*.public_key_openssh[count.index]}"
   root_password = "${random_string.password.*.result[count.index]}"

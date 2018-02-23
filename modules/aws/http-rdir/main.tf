@@ -6,6 +6,11 @@ data "aws_region" "current" {
   current = true
 }
 
+resource "random_id" "server" {
+  count = "${var.count}"
+  byte_length = 4
+}
+
 resource "tls_private_key" "ssh" {
   count = "${var.count}"
   algorithm = "RSA"
@@ -28,7 +33,7 @@ resource "aws_instance" "http-rdir" {
   count = "${var.count}"
   
   tags = {
-    Name = "http-rdir-${count.index + 1}"
+    Name = "http-rdir-${random_id.server.*.hex[count.index]}"
   }
 
   ami = "${var.amis[data.aws_region.current.name]}"

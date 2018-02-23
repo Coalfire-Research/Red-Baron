@@ -2,22 +2,27 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
+provider "google" {
+  credentials = "${file("google_keys/google_service_key.json")}"
+  project = "${var.project}"
+}
+
 resource "tls_private_key" "ssh" {
   count = "${var.count}"
   algorithm = "RSA"
   rsa_bits = 4096
 }
 
-provider "google" {
-  credentials = "${file("google_keys/google_service_key.json")}"
-  project = "${var.project}"
+resource "random_id" "server" {
+  count = "${var.count}"
+  byte_length = 4
 }
 
 resource "google_compute_instance" "http-c2" {
   count = "${var.count}"
   machine_type = "${var.machine_type}"
-  name = "http-c2-${count.index + 1}"
-  zone = "${var.available_zones[var.zones[count.index]]}"
+  name = "http-c2-${random_id.server.*.hex[count.index]}"
+  zone = "${var.available_zones[element(var.zones, count.index)]}"
   can_ip_forward = true  
 
   boot_disk {
