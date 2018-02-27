@@ -2,9 +2,7 @@ terraform {
   required_version = ">= 0.10.0"
 }
 
-data "aws_region" "current" {
-  current = true
-}
+data "aws_region" "current" {}
 
 resource "random_id" "server" {
   count = "${var.count}"
