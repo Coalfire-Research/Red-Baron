@@ -75,3 +75,13 @@ Most of the documentation assumes you are familiar with [Terraform](https://www.
 - LetsEncrypt cert creation using the TLS challenge currently doesn't work due to the third-party terraform ACME plugin implementation (https://github.com/paybyphone/terraform-provider-acme#using-http-and-tls-challenges). (I probably could get it to work with some extra tinkering)
 
 - The GoDaddy modules replace **all** of the DNS entries instead of adding the specified record to the existing zone file due to the implementation of the third-party provider (https://github.com/n3integration/terraform-godaddy). (Not ideal and definitely need to work on this, but it will due for now)
+
+# License
+
+This project is released as 100% open-source to help the security community. 
+Feel free to take the code, use it how you wish, just keep in mind that if it's my code, 
+attribute me BUT MORE IMPORTANTLY if I used someone else's code or ideas, 
+make sure to credit them and respect their licenses. 
+
+Our goal for this code is to help the security community and vulnerability research in general, 
+so don't use it commercially. Let information be free!
