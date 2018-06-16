@@ -1,0 +1,2 @@
+# Authenticating to Azure
+Details on authenticating to azure in terraform workflows can be found on the [Terraform Azure Provider page](https://www.terraform.io/docs/providers/azurerm/index.html#creating-credentials) as well as on the [Microsoft Docs pages on Terraform](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/terraform-install-configure)
