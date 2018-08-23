@@ -39,10 +39,10 @@ Both of these resources were referenced heavily while building this.
 #~ export DIGITALOCEAN_TOKEN="token"
 #~ export GODADDY_API_KEY="gdkey"
 #~ export GODADDY_API_SECRET="gdsecret"
-#~ export ARM_SUBSCRIPTION_ID=azure_subscription_id
-#~ export ARM_CLIENT_ID=azure_app_id
-#~ export ARM_CLIENT_SECRET=azure_app_password
-#~ export ARM_TENANT_ID=azure_tenant_id
+#~ export ARM_SUBSCRIPTION_ID="azure_subscription_id"
+#~ export ARM_CLIENT_ID="azure_app_id"
+#~ export ARM_CLIENT_SECRET="azure_app_password"
+#~ export ARM_TENANT_ID="azure_tenant_id"
 
 # copy an infrastructure configuration file from the examples folder to the root directory and modify it to your needs
 #~ cp examples/complete_c2.tf .
