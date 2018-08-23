@@ -13,7 +13,6 @@ This repository comes with a few pre-compiled [Terraform](https://www.terraform.
 
 - Linode Provider: https://github.com/LinodeContent/terraform-provider-linode
 - GoDaddy Provider: https://github.com/n3integration/terraform-godaddy
-- ACME Provider: https://github.com/paybyphone/terraform-provider-acme
 
 # Author and Acknowledgments
 
