@@ -81,10 +81,4 @@ Most of the documentation assumes you are familiar with [Terraform](https://www.
 
 # License
 
-This project is released as 100% open-source to help the security community. 
-Feel free to take the code, use it how you wish, just keep in mind that if it's my code, 
-attribute me BUT MORE IMPORTANTLY if I used someone else's code or ideas, 
-make sure to credit them and respect their licenses. 
-
-Our goal for this code is to help the security community and vulnerability research in general, 
-so don't use it commercially. Let information be free!
+This fork of the original Red Baron repository is licensed under the GNU General Public License v3.0.
