@@ -12,9 +12,15 @@ sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
 
 token=`curl -s https://www.cobaltstrike.com/download -d "dlkey=${key}" | grep 'href="/downloads/' | cut -d '/' -f3`
 curl -s https://www.cobaltstrike.com/downloads/${token}/cobaltstrike-trial.tgz -o /tmp/cobaltstrike.tgz
+
+echo ${key} > ~/.cobaltstrike.license
+sudo cp ~/.cobaltstrike.license /root/.cobaltstrike.license
+
 mkdir ~/cobaltstrike
 tar zxf /tmp/cobaltstrike.tgz -C ~/
-echo ${key} > ~/.cobaltstrike.license
 rm /tmp/cobaltstrike.tgz
 
 git clone https://github.com/rsmudge/Malleable-C2-Profiles.git ~/cobaltstrike/c2
+
+cd ~/cobaltstrike
+./update
