@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.10.0"
+  required_version = ">= 0.11.0"
 }
 
 // Currently, variables in provider fields are not supported :(

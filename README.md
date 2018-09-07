@@ -28,7 +28,7 @@ Both of these resources were referenced heavily while building this.
 
 # Setup
 
-**Red Baron only supports Terraform version 0.10.0 or newer and will only work on Linux x64 systems.** 
+**Red Baron only supports Terraform version 0.11.0 or newer and will only work on Linux x64 systems.** 
 
 ```
 #~ git clone https://github.com/Coalfire-Research/Red-Baron && cd Red-Baron

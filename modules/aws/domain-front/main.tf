@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.10.0"
+  required_version = ">= 0.11.0"
 }
 
 resource "aws_cloudfront_distribution" "http-c2" {
