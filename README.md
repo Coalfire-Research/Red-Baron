@@ -31,7 +31,7 @@ Both of these resources were referenced heavily while building this.
 **Red Baron only supports Terraform version 0.11.0 or newer and will only work on Linux x64 systems.** 
 
 ```
-#~ git clone https://github.com/Coalfire-Research/Red-Baron && cd Red-Baron
+#~ git clone https://github.com/byt3bl33d3r/Red-Baron && cd Red-Baron
 #~ export AWS_ACCESS_KEY_ID="accesskey"
 #~ export AWS_SECRET_ACCESS_KEY="secretkey"
 #~ export AWS_DEFAULT_REGION="us-east-1"
