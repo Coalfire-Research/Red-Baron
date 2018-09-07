@@ -5,7 +5,7 @@ terraform {
 module "dns_c2" {
   source = "./modules/digitalocean/dns-c2"
 
-  // 1 http C2 ha. ha. ha... 2 http C2s ha. ha. ha... 3 http C2s ha. ha. ha...
+  // 1 dns C2 ha. ha. ha... 2 dns C2s ha. ha. ha... 3 dns C2s ha. ha. ha...
   //count = 2
 
   // Wanna install empire?
