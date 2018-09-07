@@ -66,7 +66,7 @@ Most of the documentation assumes you are familiar with [Terraform](https://www.
 
 - A resources ```count``` parameter cannot be a dynamic value which means we must pass it as a module variable instead of inferring it from the length of the list we give it as a argument (https://github.com/hashicorp/terraform/issues/14677)
 
-- LetsEncrypt cert creation using the TLS challenge currently doesn't work due to the third-party terraform ACME plugin implementation (https://github.com/paybyphone/terraform-provider-acme#using-http-and-tls-challenges). (I probably could get it to work with some extra tinkering)
+~- LetsEncrypt cert creation using the TLS challenge currently doesn't work due to the third-party terraform ACME plugin implementation (https://github.com/paybyphone/terraform-provider-acme#using-http-and-tls-challenges). (I probably could get it to work with some extra tinkering)~
 
 - The GoDaddy modules replace **all** of the DNS entries instead of adding the specified record to the existing zone file due to the implementation of the third-party provider (https://github.com/n3integration/terraform-godaddy). (Not ideal and definitely need to work on this, but it will due for now)
 
