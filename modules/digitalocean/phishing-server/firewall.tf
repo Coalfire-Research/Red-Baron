@@ -26,6 +26,11 @@ resource "digitalocean_firewall" "web" {
       protocol         = "tcp"
       port_range       = "22"
       source_addresses = ["${data.external.get_public_ip.result["ip"]}/32"]
+    },
+    {
+      protocol         = "udp"
+      port_range       = "60000-61000"
+      source_addresses = ["0.0.0.0/0", "::/0"]
     }
   ]
 

@@ -42,6 +42,12 @@ resource "aws_security_group" "http-c2" {
 
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port = 60000
+    to_port = 61000
+    protocol = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port = 53
     to_port = 53
