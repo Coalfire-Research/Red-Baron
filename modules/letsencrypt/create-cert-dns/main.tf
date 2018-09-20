@@ -25,18 +25,18 @@ resource "acme_certificate" "certificate" {
   count                     = "${var.count}"
   account_key_pem           = "${element(acme_registration.reg.*.account_key_pem, count.index)}"
   common_name               = "${element(var.domains, count.index)}"
-  subject_alternative_names = "${var.subject_alternative_names[element(var.domains, count.index)]}"
+  subject_alternative_names = "${length(var.subject_alternative_names) > 0 ? var.subject_alternative_names[element(var.domains, count.index)] : []}"
 
   dns_challenge {
     provider = "${var.provider}"
   }
 
   provisioner "local-exec" {
-    command = "echo \"${self.private_key_pem}\" > ./certificates/${self.common_name}_privkey.pem && echo \"${self.certificate_pem}\" > ./certificates/${self.common_name}_cert.pem"
+    command = "echo \"${self.private_key_pem}\" > ./data/certificates/${self.common_name}_privkey.pem && echo \"${self.certificate_pem}\" > ./data/certificates/${self.common_name}_cert.pem"
   }
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./certificates/${self.common_name}*"
+    command = "rm ./data/certificates/${self.common_name}*"
   }
 }

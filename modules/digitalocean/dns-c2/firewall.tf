@@ -3,11 +3,15 @@ terraform {
 }
 
 data "external" "get_public_ip" {
-  program = ["bash", "./scripts/get_public_ip.sh" ]
+  program = ["bash", "./data/scripts/get_public_ip.sh" ]
+}
+
+resource "random_id" "firewall" {
+  byte_length = 4
 }
 
 resource "digitalocean_firewall" "web" {
-  name = "dns-c2-only-allow-dns-http-ssh"
+  name = "dns-c2-only-allow-dns-http-ssh-${random_id.firewall.hex}"
 
   droplet_ids = ["${digitalocean_droplet.dns-c2.*.id}"]
 

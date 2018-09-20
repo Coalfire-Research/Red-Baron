@@ -3,7 +3,6 @@ terraform {
 }
 
 provider "google" {
-  credentials = "${file("google_keys/google_service_key.json")}"
   project = "${var.project}"
 }
 

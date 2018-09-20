@@ -44,6 +44,8 @@ Both of these resources were referenced heavily while building this.
 #~ export ARM_CLIENT_SECRET="azure_app_password"
 #~ export ARM_TENANT_ID="azure_tenant_id"
 
+# For Google see https://www.terraform.io/docs/providers/google/index.html#configuration-reference and set the appropriate environment variable for your use case
+
 # copy an infrastructure configuration file from the examples folder to the root directory and modify it to your needs
 #~ cp examples/complete_c2.tf .
 
