@@ -38,8 +38,8 @@ resource "google_compute_instance" "dns-rdir" {
   
   provisioner "remote-exec" {
     inline = [
-      "apt-get update"
-      "apt-get install -y tmux socat"
+      "apt-get update",
+      "apt-get install -y tmux socat",
       "tmux new -d \"socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.redirect_to, count.index)}\""
     ]
 

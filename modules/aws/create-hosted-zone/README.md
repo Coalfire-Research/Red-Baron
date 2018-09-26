@@ -21,3 +21,4 @@ module "create_hosted_zone" {
 | Name                      | Value Type | Description
 |---------------------------| ---------- | -----------
 |`zone_id`                  | String     | The created hosted zone ID.
+|`name_servers`             | Array      | The name servers for this zone.

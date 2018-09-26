@@ -38,9 +38,9 @@ resource "google_compute_instance" "phishing-server" {
   
   provisioner "remote-exec" {
     inline = [
-      "apt-get update"
-      "apt-get install -y tmux apache2 certbot"
-      "a2enmod ssl"
+      "apt-get update",
+      "apt-get install -y tmux apache2 certbot",
+      "a2enmod ssl",
       "systemctl stop apache2"
     ]
 
