@@ -38,7 +38,7 @@ resource "digitalocean_droplet" "dns-c2" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${self.ipv4_address}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${self.ipv4_address}.pub && chmod 600 ./data/ssh_keys/*" 
   }
 
   provisioner "local-exec" {

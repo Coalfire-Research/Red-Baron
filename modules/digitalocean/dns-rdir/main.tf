@@ -42,7 +42,7 @@ resource "digitalocean_droplet" "dns-rdir" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${self.ipv4_address}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${self.ipv4_address}.pub && chmod 600 ./data/ssh_keys/*" 
   }
 
   provisioner "local-exec" {
@@ -51,7 +51,6 @@ resource "digitalocean_droplet" "dns-rdir" {
   }
 
 }
-
 
 resource "null_resource" "ansible_provisioner" {
   count = "${signum(length(var.ansible_playbook)) == 1 ? var.count : 0}"

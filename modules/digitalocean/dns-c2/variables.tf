@@ -24,7 +24,6 @@ variable "ansible_vars" {
   description = "Environment variables"
 }
 
-
 variable "size" {
   default = "1gb"
 }
