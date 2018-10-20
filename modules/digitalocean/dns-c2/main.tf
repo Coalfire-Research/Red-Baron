@@ -38,12 +38,12 @@ resource "digitalocean_droplet" "dns-c2" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/dns_c2_${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/dns_c2_${self.ipv4_address}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${self.ipv4_address}.pub" 
   }
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./data/ssh_keys/dns_c2_${self.ipv4_address}*"
+    command = "rm ./data/ssh_keys/${self.ipv4_address}*"
   }
 }
 
@@ -58,7 +58,7 @@ resource "null_resource" "ansible_provisioner" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/dns_c2_${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]} -e host=${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]} ${var.ansible_playbook}"
+    command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]} -e host=${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]} ${var.ansible_playbook}"
 
     environment {
       ANSIBLE_HOST_KEY_CHECKING = "False"
@@ -82,7 +82,7 @@ data "template_file" "ssh_config" {
     name = "dns_c2_${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]}"
     hostname = "${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]}"
     user = "root"
-    identityfile = "${path.root}/data/ssh_keys/dns_c2_${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]}"
+    identityfile = "${path.root}/data/ssh_keys/${digitalocean_droplet.dns-c2.*.ipv4_address[count.index]}"
   }
 
 }

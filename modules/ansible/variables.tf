@@ -2,8 +2,8 @@ variable "playbook" {
   description = "Playbook to run"
 }
 
-variable "ips" {
-  type = "list"
+variable "ip" {
+  description = "Host to run playbook on"
 }
 
 variable "user" {

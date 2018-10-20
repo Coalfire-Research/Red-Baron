@@ -43,12 +43,12 @@ resource "digitalocean_droplet" "phishing-server" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/phishing_server_${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/phishing_server_${self.ipv4_address}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/${self.ipv4_address} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/${self.ipv4_address}.pub" 
   }
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./ssh_keys/phishing_server_${self.ipv4_address}*"
+    command = "rm ./ssh_keys/${self.ipv4_address}*"
   }
 
 }
@@ -64,7 +64,7 @@ resource "null_resource" "ansible_provisioner" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/phishing_server_${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]} -e host=${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]} ${var.ansible_playbook}"
+    command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]} -e host=${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]} ${var.ansible_playbook}"
 
     environment {
       ANSIBLE_HOST_KEY_CHECKING = "False"
@@ -88,7 +88,7 @@ data "template_file" "ssh_config" {
     name = "phishing_server_${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]}"
     hostname = "${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]}"
     user = "root"
-    identityfile = "${path.root}/data/ssh_keys/phishing_server_${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]}"
+    identityfile = "${path.root}/data/ssh_keys/${digitalocean_droplet.phishing-server.*.ipv4_address[count.index]}"
   }
 
 }
