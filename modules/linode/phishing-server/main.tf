@@ -37,7 +37,7 @@ resource "linode_linode" "phishing-server" {
   provisioner "remote-exec" {
     inline = [
       "apt-get update",
-      "apt-get install -y tmux apache2 certbot",
+      "apt-get install -y tmux apache2 certbot mosh",
       "a2enmod ssl",
       "systemctl stop apache2"
     ]

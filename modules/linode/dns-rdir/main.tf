@@ -37,7 +37,7 @@ resource "linode_linode" "dns-rdir" {
   provisioner "remote-exec" {
     inline = [
         "apt-get update",
-        "apt-get install -y tmux socat",
+        "apt-get install -y tmux socat mosh",
         "tmux new -d \"socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.redirect_to, count.index)}\""
     ]
 

@@ -38,7 +38,7 @@ resource "google_compute_instance" "http-rdir" {
   provisioner "remote-exec" {
     inline = [
       "apt-get update",
-      "apt-get install -y tmux socat apache2",
+      "apt-get install -y tmux socat apache2 mosh",
       "a2enmod rewrite proxy proxy_http ssl",
       "systemctl stop apache2",
       "tmux new -d \"socat TCP4-LISTEN:80,fork TCP4:${element(var.redirect_to, count.index)}:80\" ';' split \"socat TCP4-LISTEN:443,fork TCP4:${element(var.redirect_to, count.index)}:443\""

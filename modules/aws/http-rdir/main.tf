@@ -44,7 +44,7 @@ resource "aws_instance" "http-rdir" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y tmux socat apache2",
+      "sudo apt-get install -y tmux socat apache2 mosh",
       "sudo a2enmod rewrite proxy proxy_http ssl",
       "sudo systemctl stop apache2",
       "tmux new -d \"sudo socat TCP4-LISTEN:80,fork TCP4:${element(var.redirect_to, count.index)}:80\" ';' split \"sudo socat TCP4-LISTEN:443,fork TCP4:${element(var.redirect_to, count.index)}:443\""

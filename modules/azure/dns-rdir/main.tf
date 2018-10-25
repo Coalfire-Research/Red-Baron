@@ -88,7 +88,7 @@ resource "azurerm_virtual_machine" "dns-rdir" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y tmux socat",
+      "sudo apt-get install -y tmux socat mosh",
       "tmux new -d \"sudo socat udp4-recvfrom:53,reuseaddr,fork udp4-sendto:${element(var.redirect_to, count.index)}\"",
     ]
 
