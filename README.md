@@ -1,3 +1,7 @@
+Latest version of this project is now being maintained here: 
+
+https://github.com/byt3bl33d3r/Red-Baron
+
 # Red Baron
 
 <p align="center">
