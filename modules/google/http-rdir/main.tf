@@ -72,6 +72,6 @@ resource "google_compute_instance" "http-rdir" {
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./ssh_keys/http_rdir_${self.network_interface.0.access_config.0.assigned_nat_ip}*"
+    command = "rm ./ssh_keys/http_rdir_${self.network_interface.0.access_config.0.nat_ip}*"
   }
 }
