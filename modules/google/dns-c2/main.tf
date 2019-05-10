@@ -61,7 +61,7 @@ resource "google_compute_instance" "dns-c2" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/dns_rdir_${self.network_interface.0.access_config.0.assigned_nat_ip } && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/dns_rdir_${self.network_interface.0.access_config.0.nat_ip}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/dns_rdir_${self.network_interface.0.access_config.0.nat_ip } && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/dns_rdir_${self.network_interface.0.access_config.0.nat_ip}.pub" 
   }
 
   provisioner "local-exec" {
