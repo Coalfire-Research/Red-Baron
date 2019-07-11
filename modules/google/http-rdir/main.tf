@@ -1,9 +1,8 @@
 terraform {
-  required_version = ">= 0.10.0"
+  required_version = ">= 0.11.0"
 }
 
 provider "google" {
-  credentials = "${file("google_keys/google_service_key.json")}"
   project = "${var.project}"
 }
 
@@ -39,7 +38,7 @@ resource "google_compute_instance" "http-rdir" {
   provisioner "remote-exec" {
     inline = [
       "apt-get update",
-      "apt-get install -y tmux socat apache2",
+      "apt-get install -y tmux socat apache2 mosh",
       "a2enmod rewrite proxy proxy_http ssl",
       "systemctl stop apache2",
       "tmux new -d \"socat TCP4-LISTEN:80,fork TCP4:${element(var.redirect_to, count.index)}:80\" ';' split \"socat TCP4-LISTEN:443,fork TCP4:${element(var.redirect_to, count.index)}:443\""
@@ -67,11 +66,68 @@ resource "google_compute_instance" "http-rdir" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/http_rdir_${self.network_interface.0.access_config.0.assigned_nat_ip } && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/http_rdir_${self.network_interface.0.access_config.0.assigned_nat_ip}.pub" 
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${self.network_interface.0.access_config.0.assigned_nat_ip} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${self.network_interface.0.access_config.0.assigned_nat_ip}.pub && chmod 600 ./data/ssh_keys/*" 
   }
 
   provisioner "local-exec" {
     when = "destroy"
-    command = "rm ./ssh_keys/http_rdir_${self.network_interface.0.access_config.0.assigned_nat_ip}*"
+    command = "rm ./data/ssh_keys/${self.network_interface.0.access_config.0.assigned_nat_ip}*"
+  }
+}
+
+resource "null_resource" "ansible_provisioner" {
+  count = "${signum(length(var.ansible_playbook)) == 1 ? var.count : 0}"
+
+  depends_on = ["google_compute_instance.http-rdir"]
+
+  triggers {
+    droplet_creation = "${join("," , google_compute_instance.http-rdir.*.id)}"
+    policy_sha1 = "${sha1(file(var.ansible_playbook))}"
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/${google_compute_instance.http-rdir.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]} -e host=${google_compute_instance.http-rdir.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]} ${var.ansible_playbook}"
+
+    environment {
+      ANSIBLE_HOST_KEY_CHECKING = "False"
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+data "template_file" "ssh_config" {
+
+  count    = "${var.count}"
+
+  template = "${file("./data/templates/ssh_config.tpl")}"
+
+  depends_on = ["google_compute_instance.http-rdir"]
+
+  vars {
+    name = "dns_c2_${google_compute_instance.http-rdir.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]}"
+    hostname = "${google_compute_instance.http-rdir.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]}"
+    user = "root"
+    identityfile = "${path.root}/data/ssh_keys/${google_compute_instance.http-rdir.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]}"
+  }
+}
+
+resource "null_resource" "gen_ssh_config" {
+
+  count = "${var.count}"
+
+  triggers {
+    template_rendered = "${data.template_file.ssh_config.*.rendered[count.index]}"
+  }
+
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.ssh_config.*.rendered[count.index]}' > ./data/ssh_configs/config_${random_id.server.*.hex[count.index]}"
+  }
+
+  provisioner "local-exec" {
+    when = "destroy"
+    command = "rm ./data/ssh_configs/config_${random_id.server.*.hex[count.index]}"
   }
 }

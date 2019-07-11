@@ -6,6 +6,23 @@ variable "redirect_to" {
   type = "list"
 }
 
+variable "ansible_playbook" {
+  default = ""
+  description = "Ansible Playbook to run"
+}
+
+variable "ansible_arguments" {
+  default = []
+  type    = "list"
+  description = "Additional Ansible Arguments"
+}
+
+variable "ansible_vars" {
+  default = []
+  type    = "list"
+  description = "Environment variables"
+}
+
 variable "count" {
   default = 1
 }

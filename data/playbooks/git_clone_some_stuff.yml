@@ -1,0 +1,13 @@
+- hosts: all
+  gather_facts: False
+  check_mode: no
+  become: True
+  tasks:
+  - name: git clone Impacket
+    git:
+      repo: https://github.com/CoreSecurity/impacket.git
+      dest: /root/git/impacket
+  - name: git clone CME
+    git:
+      repo: https://github.com/byt3bl33d3r/CrackMapExec
+      dest: /root/git/cme

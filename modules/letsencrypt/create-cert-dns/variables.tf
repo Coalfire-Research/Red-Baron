@@ -1,17 +1,17 @@
+variable "provider" {
+}
+
 variable "domains" {
   type = "list"
 }
 
 variable "subject_alternative_names" {
   type = "map"
+  default = {}
 }
 
 variable "count" {
   default = 1
-}
-
-variable "provider" {
-  default = "route53"
 }
 
 variable "server_url" {

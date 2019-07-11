@@ -14,3 +14,9 @@ output "certificate_private_key_pem" {
 output "certificate_issuer_pem" {
   value = ["${acme_certificate.certificate.*.issuer_pem}"]
 }
+output "certificate_file_path" {
+  value = "./data/certificates/${acme_certificate.certificate.common_name}_cert.pem"
+}
+output "certificate_private_key_file_path" {
+  value = "./data/certificates/${acme_certificate.certificate.common_name}_privkey.pem"
+}

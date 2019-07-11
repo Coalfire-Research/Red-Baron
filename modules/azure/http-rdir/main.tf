@@ -88,7 +88,7 @@ resource "azurerm_virtual_machine" "http-rdir" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y tmux socat apache2",
+      "sudo apt-get install -y tmux socat apache2 mosh",
       "sudo a2enmod rewrite proxy proxy_http ssl",
       "sudo systemctl stop apache2",
       "tmux new -d \"sudo socat TCP4-LISTEN:80,fork TCP4:${element(var.redirect_to, count.index)}:80\" ';' split \"sudo socat TCP4-LISTEN:443,fork TCP4:${element(var.redirect_to, count.index)}:443\"",
@@ -103,11 +103,70 @@ resource "azurerm_virtual_machine" "http-rdir" {
   }
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./ssh_keys/http_rdir_${element(azurerm_public_ip.pip.*.ip_address, count.index )} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./ssh_keys/http_rdir_${element(azurerm_public_ip.pip.*.ip_address, count.index )}.pub"
+    command = "echo \"${tls_private_key.ssh.*.private_key_pem[count.index]}\" > ./data/ssh_keys/${element(azurerm_public_ip.pip.*.ip_address, count.index)} && echo \"${tls_private_key.ssh.*.public_key_openssh[count.index]}\" > ./data/ssh_keys/${element(azurerm_public_ip.pip.*.ip_address, count.index)}.pub && chmod 600 ./data/ssh_keys/*"
   }
 
   provisioner "local-exec" {
     when    = "destroy"
-    command = "rm ./ssh_keys/http_rdir_${element(azurerm_public_ip.pip.*.ip_address, count.index )}*"
+    command = "rm ./data/ssh_keys/${element(azurerm_public_ip.pip.*.ip_address, count.index)}*"
   }
+}
+
+resource "null_resource" "ansible_provisioner" {
+  count = "${signum(length(var.ansible_playbook)) == 1 ? var.count : 0}"
+
+  depends_on = ["azurerm_virtual_machine.http-rdir"]
+
+  triggers {
+    droplet_creation = "${join("," , azurerm_virtual_machine.http-rdir.*.id)}"
+    policy_sha1 = "${sha1(file(var.ansible_playbook))}"
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=${var.username} --private-key=./data/ssh_keys/${element(azurerm_public_ip.pip.*.ip_address, count.index)} -e host=${element(azurerm_public_ip.pip.*.ip_address, count.index)} ${var.ansible_playbook}"
+
+    environment {
+      ANSIBLE_HOST_KEY_CHECKING = "False"
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+data "template_file" "ssh_config" {
+
+  count    = "${var.count}"
+
+  template = "${file("./data/templates/ssh_config.tpl")}"
+
+  depends_on = ["azurerm_virtual_machine.http-rdir"]
+
+  vars {
+    name = "dns_c2_${element(azurerm_public_ip.pip.*.ip_address, count.index)}"
+    hostname = "${element(azurerm_public_ip.pip.*.ip_address, count.index)}"
+    user = "${var.username}"
+    identityfile = "${path.root}/data/ssh_keys/${element(azurerm_public_ip.pip.*.ip_address, count.index)}"
+  }
+
+}
+
+resource "null_resource" "gen_ssh_config" {
+
+  count = "${var.count}"
+
+  triggers {
+    template_rendered = "${data.template_file.ssh_config.*.rendered[count.index]}"
+  }
+
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.ssh_config.*.rendered[count.index]}' > ./data/ssh_configs/config_${random_id.server.*.hex[count.index]}"
+  }
+
+  provisioner "local-exec" {
+    when = "destroy"
+    command = "rm ./data/ssh_configs/config_${random_id.server.*.hex[count.index]}"
+  }
+
 }

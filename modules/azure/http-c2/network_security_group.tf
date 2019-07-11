@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.10.0"
+  required_version = ">= 0.11.0"
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -45,8 +45,20 @@ resource "azurerm_network_security_group" "nsg" {
   }
 
   security_rule {
-    name                       = "DNS-Out"
+    name                       = "Mosh-In"
     priority                   = 1004
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Udp"
+    source_port_range          = "*"
+    destination_port_range     = "60000-61000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "DNS-Out"
+    priority                   = 1005
     direction                  = "Outbound"
     access                     = "Allow"
     protocol                   = "Udp"
@@ -58,7 +70,7 @@ resource "azurerm_network_security_group" "nsg" {
 
   security_rule {
     name                       = "HTTP-Out"
-    priority                   = 1005
+    priority                   = 1006
     direction                  = "Outbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -70,7 +82,7 @@ resource "azurerm_network_security_group" "nsg" {
 
   security_rule {
     name                       = "HTTPS-Out"
-    priority                   = 1006
+    priority                   = 1007
     direction                  = "Outbound"
     access                     = "Allow"
     protocol                   = "Tcp"

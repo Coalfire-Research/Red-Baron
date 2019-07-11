@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.10.0"
+  required_version = ">= 0.11.0"
 }
 
 data "external" "get_public_ip" {
@@ -40,6 +40,12 @@ resource "aws_security_group" "http-c2" {
                    "${var.my_ip}/32"]
     */
 
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 60000
+    to_port = 61000
+    protocol = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {

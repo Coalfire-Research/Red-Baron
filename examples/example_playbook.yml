@@ -1,0 +1,19 @@
+# You must add this section on the top of the main playbook that will be used for provisioning.
+# Stolen from https://github.com/cloudposse/terraform-null-ansible
+
+- hosts: localhost
+  gather_facts: True
+  check_mode: no
+  tasks:
+  - name: Add a public IP address to the in-memory inventory
+    add_host:
+      name: "{{ host }}"
+      groups: all
+
+  - local_action: wait_for port=22 host="{{ host }}" search_regex=OpenSSH delay=10
+
+### End of required section ###
+
+- name: Git cloning some stuff
+  import_playbook: ./data/playbooks/git_clone_some_stuff.yml
+#  import_playbook: data/playbooks/httpc2doneright.yml
