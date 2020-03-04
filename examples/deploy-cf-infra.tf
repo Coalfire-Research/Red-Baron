@@ -57,7 +57,7 @@ module "zone" {
   source = "./modules/cloudflare/zone_creation"
   my_domain_name = "DOMAINNAME"            //our frontend domain
   benign_domain = "google.com"                   //the benign domain where non-agents, targets, should be redirected
-  a_record = "www"
+  cname_record = "www"
   //you'll need this: ${module.zone.zone_id}
 }
 
@@ -66,6 +66,7 @@ module "http-redirector" {
   zone_id = "${module.zone.zone_id}"
 
   my_domain_name = "DOMAINNAME"            //our frontend domain
+  c2_server = "DESTINATION"                //the backend C2 server
   uri_pattern = "/agentcallback/*"         //the URI that should be redirected to C2
   filter_selection = "country"            //filter setting (none, country, user_agent, referer, all)
   country = "US"                          //override default filter details
