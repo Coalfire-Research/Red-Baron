@@ -16,16 +16,6 @@ resource "cloudflare_record" "benign_CNAME" {
     value = "${var.benign_domain}"
 }
 
-//another benign CNAME relay for good measure
-resource "cloudflare_record" "benign_www_CNAME" {
-    zone_id = "${cloudflare_zone.target_domain.id}"
-    name = "${var.cname_record}"
-    type = "CNAME"
-    ttl = "1"
-    proxied = "true"
-    value = "${var.benign_domain}"
-}
-
 /*
 resource "cloudflare_zone_settings_override" "zone_settings_override"{
 	zone_id = "${cloudflare_zone.target_domain.id}"

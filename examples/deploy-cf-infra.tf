@@ -57,8 +57,17 @@ module "zone" {
   source = "./modules/cloudflare/zone_creation"
   my_domain_name = "DOMAINNAME"            //our frontend domain
   benign_domain = "google.com"                   //the benign domain where non-agents, targets, should be redirected
-  cname_record = "www"
   //you'll need this: ${module.zone.zone_id}
+}
+
+//If you're using C2 then you'll need to make an entry - CloudFlare worker scripts don't work with IPs.
+module "record" {
+  source = "./modules/cloudflare/record_creation"
+  zone_id = "${module.zone.zone_id}"
+
+  hostname = "images"
+  type = "A"
+  server = "1.1.1.1"
 }
 
 module "http-redirector" {

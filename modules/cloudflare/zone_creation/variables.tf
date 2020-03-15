@@ -9,9 +9,4 @@ variable "my_domain_name" {
 variable "benign_domain" {
 }
 
-//By default we'll make a record for the www A record
-//that points to your benign_domain.
-variable "cname_record" {
-    default = "www"
-}
 
