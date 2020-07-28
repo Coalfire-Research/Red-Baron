@@ -1,12 +1,12 @@
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
 variable "resource_group_names" {
-  type = "list"
+  type = list(string)
 }
 
 variable "locations" {
-  type    = "list"
+  type    = list(string)
   default = ["eastus2"]
 }

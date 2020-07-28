@@ -1,8 +1,8 @@
 variable "redirect_to" {
-  type = "list"
+  type = list(string)
 }
 
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
@@ -13,13 +13,13 @@ variable "ansible_playbook" {
 
 variable "ansible_arguments" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Additional Ansible Arguments"
 }
 
 variable "ansible_vars" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Environment variables"
 }
 
@@ -32,12 +32,12 @@ variable "project" {
 }
 
 variable "zones" {
-  type = "list"
+  type = list(string)
   default = ["Canada-1"]
 }
 
 variable "available_zones" {
-  type = "map"
+  type = map(string)
   default = {
     "Canada-1" = "northamerica-northeast1-a"
     "Canada-2" = "northamerica-northeast1-b"

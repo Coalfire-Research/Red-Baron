@@ -10,6 +10,6 @@ module "http_c2" {
 module "http_rdir" {
   source = "./modules/google/http-rdir"
   count = 2
-  redirect_to = "${module.http_c2.ips}"
+  redirect_to = module.http_c2.ips
   zones = ["Canada-1", "Brazil-2"]
 }

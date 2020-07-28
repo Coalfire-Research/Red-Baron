@@ -59,8 +59,8 @@ module "create_vpc" {
 module "http_c2" {
   source = "./modules/aws/http-c2"
 
-  vpc_id = "${module.create_vpc.vpc_id}"
-  subnet_id = "${module.create_vpc.subnet_id}"
+  vpc_id = module.create_vpc.vpc_id
+  subnet_id = module.create_vpc.subnet_id
 
   //install = ["./scripts/empire.sh"]
 }
@@ -68,22 +68,22 @@ module "http_c2" {
 module "dns_c2" {
   source = "./modules/aws/dns-c2"
 
-  vpc_id = "${module.create_vpc.vpc_id}"
-  subnet_id = "${module.create_vpc.subnet_id}"
+  vpc_id = module.create_vpc.vpc_id
+  subnet_id = module.create_vpc.subnet_id
 }
 
 module "http_rdir" {
   source = "./modules/linode/http-rdir"
 
   count = 2
-  redirect_to = "${module.http_c2.ips}"
+  redirect_to = module.http_c2.ips
   regions = ["UK", "SG"]
 }
 
 module "dns_rdir" {
   source = "./modules/linode/dns-rdir"
 
-  redirect_to = "${module.dns_c2.ips}"
+  redirect_to = module.dns_c2.ips
 }
 
 module "http_rdir1_records" {
@@ -91,7 +91,7 @@ module "http_rdir1_records" {
   domain = "theredbaroness.com"
   type = "A"
   records = {
-    "theredbaroness.com" = "${module.http_rdir.ips[0]}"
+    "theredbaroness.com" = module.http_rdir.ips[0]
   }
 }
 
@@ -100,7 +100,7 @@ module "http_rdir2_records" {
   domain = "pizzapastalasagna.com"
   type = "A"
   records = {
-    "pizzapastalasagna.com" = "${module.http_rdir.ips[1]}"
+    "pizzapastalasagna.com" = module.http_rdir.ips[1]
   }
 }
 
@@ -110,8 +110,8 @@ module "dns_rdir_records" {
   domain = "goodyearbook.com"
   type = "A"
   records = {
-    "goodyearbook.com"     = "${module.dns_rdir.ips[0]}"
-    "ns1.goodyearbook.com" = "${module.dns_rdir.ips[0]}"
+    "goodyearbook.com"     = module.dns_rdir.ips[0]
+    "ns1.goodyearbook.com" = module.dns_rdir.ips[0]
   }
 }
 
@@ -137,25 +137,25 @@ module "create_certs" {
 }
 
 output "http-c2-ips" {
-  value = "${module.http_c2.ips}"
+  value = module.http_c2.ips
 }
 
 output "dns-c2-ips" {
-  value = "${module.dns_c2.ips}"
+  value = module.dns_c2.ips
 }
 
 output "http-rdir-ips" {
-  value = "${module.http_rdir.ips}"
+  value = module.http_rdir.ips
 }
 
 output "dns-rdir-ips" {
-  value = "${module.dns_rdir.ips}"
+  value = module.dns_rdir.ips
 }
 
 output "http_rdir_domains" {
-  value = "${merge(module.http_rdir1_records.records, module.http_rdir2_records.records)}"
+  value = merge(module.http_rdir1_records.records, module.http_rdir2_records.records)
 }
 
 output "dns_rdir_domains" {
-  value = "${merge(module.dns_rdir_records.records, module.dns_rdir_ns_record.records)}"
+  value = merge(module.dns_rdir_records.records, module.dns_rdir_ns_record.records)
 }

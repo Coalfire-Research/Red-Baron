@@ -27,16 +27,16 @@ module "http_rdir" {
   // 1 redirector ha. ha. ha... 2 redirectors ha. ha. ha... 3 redirectors ha. ha. ha..
   //count = 4
 
-  redirect_to = "${module.http_c2.ips}"
+  redirect_to = module.http_c2.ips
 
   //regions = ["NYC1", "SGP1"]
 }
 
 // print the c2 and redirector ips to the screen all perty like when everything's done
 output "http-c2-ips" {
-  value = "${module.http_c2.ips}"
+  value = module.http_c2.ips
 }
 
 output "http-rdir-ips" {
-  value = "${module.http_rdir.ips}"
+  value = module.http_rdir.ips
 }

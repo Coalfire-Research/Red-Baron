@@ -9,7 +9,7 @@ data "external" "get_public_ip" {
 resource "aws_security_group" "dns-rdir" {
   name = "dns-rdir"
   description = "Security group created by Red Baron"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = var.vpc_id
 
   ingress {
     from_port = 22

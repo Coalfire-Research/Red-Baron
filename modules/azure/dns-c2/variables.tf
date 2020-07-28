@@ -1,21 +1,21 @@
 variable "resource_group_names" {
-  type = "list"
+  type = list(string)
 }
 
 variable "primary_blob_endpoints" {
-  type = "list"
+  type = list(string)
 }
 
 variable "storage_container_names" {
-  type = "list"
+  type = list(string)
 }
 
 variable "locations" {
-  type    = "list"
+  type    = list(string)
   default = ["eastus2"]
 }
 
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
@@ -26,13 +26,13 @@ variable "ansible_playbook" {
 
 variable "ansible_arguments" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Additional Ansible Arguments"
 }
 
 variable "ansible_vars" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Environment variables"
 }
 
@@ -45,6 +45,6 @@ variable "size" {
 }
 
 variable "install" {
-  type    = "list"
+  type    = list(string)
   default = []
 }

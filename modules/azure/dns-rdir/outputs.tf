@@ -3,5 +3,5 @@ output "ips" {
 }
 
 output "ssh_user" {
-  value = "${var.username}"
+  value = var.username
 }

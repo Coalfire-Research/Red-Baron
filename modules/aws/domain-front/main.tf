@@ -7,7 +7,7 @@ resource "aws_cloudfront_distribution" "http-c2" {
     is_ipv6_enabled = false
 
     origin {
-        domain_name = "${var.domain}"
+        domain_name = var.domain
         origin_id = "domain-front"
 
         custom_origin_config {

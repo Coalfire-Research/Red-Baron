@@ -1,4 +1,4 @@
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
@@ -9,13 +9,13 @@ variable "ansible_playbook" {
 
 variable "ansible_arguments" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Additional Ansible Arguments"
 }
 
 variable "ansible_vars" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Environment variables"
 }
 
@@ -24,12 +24,12 @@ variable "size" {
 }
 
 variable "regions" {
-  type = "list"
+  type = list(string)
   default = ["NYC1"]
 }
 
 variable "available_regions" {
-  type = "map"
+  type = map(string)
   default = {
     "NYC1" = "nyc1"
     "NYC2" = "nyc2"

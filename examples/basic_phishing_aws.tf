@@ -17,8 +17,8 @@ module "phishing_server" {
 
   // 1 phishing server ha. ha. ha... 2 phishing servers ha. ha. ha... 3 phishing servers ha. ha. ha...
   //count = 2
-  vpc_id = "${module.create_vpc.vpc_id}"
-  subnet_id = "${module.create_vpc.subnet_id}"
+  vpc_id = module.create_vpc.vpc_id
+  subnet_id = module.create_vpc.subnet_id
 
 }
 
@@ -27,9 +27,9 @@ module "http_rdir" {
 
   // 1 redirector ha. ha. ha... 2 redirectors ha. ha. ha... 3 redirectors ha. ha. ha...
   //count = 4
-  vpc_id = "${module.create_vpc.vpc_id}"
-  subnet_id = "${module.create_vpc.subnet_id}"
+  vpc_id = module.create_vpc.vpc_id
+  subnet_id = module.create_vpc.subnet_id
 
-  redirect_to = "${module.phishing_server.ips}"
+  redirect_to = module.phishing_server.ips
 
 }
