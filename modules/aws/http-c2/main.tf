@@ -42,7 +42,7 @@ resource "aws_instance" "http-c2" {
   associate_public_ip_address = true
 
   provisioner "remote-exec" {
-    scripts = concat(list("./scripts/core_deps.sh"), var.install)
+    scripts = concat(list("./data/scripts/core_deps.sh"), var.install)
 
     connection {
         host = self.public_ip

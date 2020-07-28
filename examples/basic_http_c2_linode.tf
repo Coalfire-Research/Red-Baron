@@ -11,16 +11,16 @@ module "http_c2" {
   //count = 2
 
   // Wanna install empire?
-  //install = ["./scripts/empire.sh"]
+  //install = ["./data/scripts/empire.sh"]
 
   // Wanna install metasploit?
-  //install = ["./scripts/metasploit.sh"]
+  //install = ["./data/scripts/metasploit.sh"]
 
   // Wanna install CS?
-  //install = ["./scripts/cobaltstrike.sh"]
+  //install = ["./data/scripts/cobaltstrike.sh"]
 
   // I WANT EVERYTHING
-  //install = ["./scripts/empire.sh", "./scripts/metasploit.sh", "./scripts/cobaltstrike.sh"]
+  //install = ["./data/scripts/empire.sh", "./scripts/metasploit.sh", "./scripts/cobaltstrike.sh"]
 }
 
 module "http_rdir" {

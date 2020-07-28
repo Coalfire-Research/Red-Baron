@@ -48,9 +48,9 @@ variable "size" {
 variable "install" {
   type = map(string)
   default = {
-    "empire" = "./scripts/install_empire.sh"
-    "metasploit" = "./scripts/install_metasploit.sh"
-    "cobaltstrike" = "./scripts/install_cobalt_strike.sh"
+    "empire" = "./data/scripts/install_empire.sh"
+    "metasploit" = "./data/scripts/install_metasploit.sh"
+    "cobaltstrike" = "./data/scripts/install_cobalt_strike.sh"
   }
 }
 */

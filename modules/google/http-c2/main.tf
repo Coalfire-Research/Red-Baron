@@ -50,7 +50,7 @@ resource "google_compute_instance" "http-c2" {
   }
 
   provisioner "remote-exec" {
-    scripts = concat(list("./scripts/core_deps.sh"), var.install)
+    scripts = concat(list("./data/scripts/core_deps.sh"), var.install)
     
     connection {
       type = "ssh"

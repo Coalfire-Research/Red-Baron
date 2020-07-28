@@ -35,7 +35,7 @@ resource "linode_linode" "dns-c2" {
   root_password = random_string.password.*.result[count.index]
 
   provisioner "remote-exec" {
-    scripts = concat(list("./scripts/core_deps.sh"), var.install)
+    scripts = concat(list("./data/scripts/core_deps.sh"), var.install)
 
     connection {
         type = "ssh"

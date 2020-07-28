@@ -62,7 +62,7 @@ module "http_c2" {
   vpc_id = module.create_vpc.vpc_id
   subnet_id = module.create_vpc.subnet_id
 
-  //install = ["./scripts/empire.sh"]
+  //install = ["./data/scripts/empire.sh"]
 }
 
 module "dns_c2" {
