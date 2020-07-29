@@ -13,13 +13,13 @@ variable "user" {
 
 variable "arguments" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Arguments"
 }
 
 variable "envs" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Environment variables"
 }
 

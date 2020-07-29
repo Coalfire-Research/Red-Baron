@@ -3,10 +3,10 @@ terraform {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  count               = "${var.count}"
+  count               = var.count_vm
   name                = "http-c2-${count.index}-nsg"
-  location            = "${var.locations[count.index]}"
-  resource_group_name = "${var.resource_group_names[count.index]}"
+  location            = var.locations[count.index]
+  resource_group_name = var.resource_group_names[count.index]
 
   security_rule {
     name                       = "SSH-In"

@@ -16,7 +16,7 @@ module "dns_c2" {
 |---------------------------| -------- | ---------- | -----------
 |`count`                    | No       | Integer    | Number of droplets to launch. Defaults to 1.
 |`size`                     | No       | Integer    | Droplet size to launch. Defaults to `1gb`.
-|`install`                  | No       | List       | Scripts to run on droplet creation. Defaults to "./scripts/core_deps.sh".
+|`install`                  | No       | List       | Scripts to run on droplet creation. Defaults to "./data/scripts/core_deps.sh".
 |`regions`                  | No       | List       | Regions to create Droplet(s) in. Defaults to `NYC1`. Accepted values are NYC1/2/3, SFO1/2, AMS2/3, SGP1, LON1, FRA1, TOR1, BLR1.
 
 # Outputs

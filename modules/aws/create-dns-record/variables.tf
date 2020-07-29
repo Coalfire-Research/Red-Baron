@@ -2,7 +2,7 @@ variable "domain" {}
 
 variable "type" {}
 
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
@@ -11,5 +11,5 @@ variable "ttl" {
 }
 
 variable "records" {
-  type = "map"
+  type = map(string)
 }

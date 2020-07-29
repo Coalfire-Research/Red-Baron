@@ -13,7 +13,7 @@ module "phishing_server" {
 module "http_rdir" {
   source = "./modules/linode/http-rdir"
   count = 4
-  redirect_to = "${module.phishing_server.ips}"
+  redirect_to = module.phishing_server.ips
 
   regions = ["Oregon-1", "Singapore-1", "Australia-2", "Japan-1"]
 }

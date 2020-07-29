@@ -9,5 +9,5 @@ module "phishing_server" {
 module "http_rdir" {
   source = "./modules/digitalocean/http-rdir"
 
-  redirect_to = "${module.phishing_server.ips}"
+  redirect_to = module.phishing_server.ips
 }

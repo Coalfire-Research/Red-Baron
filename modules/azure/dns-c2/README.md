@@ -22,7 +22,7 @@ module "dns_c2" {
 |`storage_container_names`  | Yes      | List       | Names of the Storage Containers for VM hard drives
 |`primary_blob_endpoints`   | Yes      | List       | Names of the Storage Endpoints for VM hard drives
 |`size`                     | No       | String     | VM size to launch. Defaults to `Standard_D2`.
-|`install`                  | No       | List       | Scripts to run on VM creation. Defaults to "./scripts/core_deps.sh".
+|`install`                  | No       | List       | Scripts to run on VM creation. Defaults to "./data/scripts/core_deps.sh".
 |`locations`                | No       | List       | Locations to create VM(s) in. Defaults to `eastus2`. A list of available locations can be found on the [Azure Website](https://azure.microsoft.com/en-us/global-infrastructure/services/).
 |`username`                 | No       | String     | Name of the user account to create. Defaults to `c2user`.
 

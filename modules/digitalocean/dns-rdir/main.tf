@@ -3,29 +3,29 @@ terraform {
 }
 
 resource "random_id" "server" {
-  count = "${var.count}"
+  count = var.count_vm
   byte_length = 4
 }
 
 resource "tls_private_key" "ssh" {
-  count = "${var.count}"
+  count = var.count_vm
   algorithm = "RSA"
   rsa_bits = 4096
 }
 
 resource "digitalocean_ssh_key" "ssh_key" {
-  count = "${var.count}"
+  count = var.count_vm
   name  = "dns-rdir-key-${random_id.server.*.hex[count.index]}"
-  public_key = "${tls_private_key.ssh.*.public_key_openssh[count.index]}"
+  public_key = tls_private_key.ssh.*.public_key_openssh[count.index]
 }
 
 resource "digitalocean_droplet" "dns-rdir" {
-  count = "${var.count}"
+  count = var.count_vm
   image = "debian-9-x64"
   name = "dns-rdir-${random_id.server.*.hex[count.index]}"
-  region = "${var.available_regions[element(var.regions, count.index)]}"
+  region = var.available_regions[element(var.regions, count.index)]
   ssh_keys = ["${digitalocean_ssh_key.ssh_key.*.id[count.index]}"]
-  size = "${var.size}"
+  size = var.size
 
   provisioner "remote-exec" {
     inline = [
@@ -37,7 +37,7 @@ resource "digitalocean_droplet" "dns-rdir" {
     connection {
         type = "ssh"
         user = "root"
-        private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
+        private_key = tls_private_key.ssh.*.private_key_pem[count.index]
     }
   }
 
@@ -46,26 +46,26 @@ resource "digitalocean_droplet" "dns-rdir" {
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when = destroy
     command = "rm ./data/ssh_keys/${self.ipv4_address}*"
   }
 
 }
 
 resource "null_resource" "ansible_provisioner" {
-  count = "${signum(length(var.ansible_playbook)) == 1 ? var.count : 0}"
+  count = signum(length(var.ansible_playbook)) == 1 ? var.count_vm : 0
 
-  depends_on = ["digitalocean_droplet.dns-rdir"]
+  depends_on = [digitalocean_droplet.dns-rdir]
 
-  triggers {
-    droplet_creation = "${join("," , digitalocean_droplet.dns-rdir.*.id)}"
-    policy_sha1 = "${sha1(file(var.ansible_playbook))}"
+  triggers = {
+    droplet_creation = join("," , digitalocean_droplet.dns-rdir.*.id)
+    policy_sha1 = sha1(file(var.ansible_playbook))
   }
 
   provisioner "local-exec" {
     command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/${digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]} -e host=${digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]} ${var.ansible_playbook}"
 
-    environment {
+    environment = {
       ANSIBLE_HOST_KEY_CHECKING = "False"
     }
   }
@@ -77,27 +77,27 @@ resource "null_resource" "ansible_provisioner" {
 
 data "template_file" "ssh_config" {
 
-  count    = "${var.count}"
+  count    = var.count_vm
 
-  template = "${file("./data/templates/ssh_config.tpl")}"
+  template = file("./data/templates/ssh_config.tpl")
 
-  depends_on = ["digitalocean_droplet.dns-rdir"]
+  depends_on = [digitalocean_droplet.dns-rdir]
 
-  vars {
+  vars = {
     name = "dns_rdir_${digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]}"
-    hostname = "${digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]}"
+    hostname = digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]
     user = "root"
-    identityfile = "${path.root}/data/ssh_keys/${digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]}"
+    identityfile = path.root}/data/ssh_keys/${digitalocean_droplet.dns-rdir.*.ipv4_address[count.index]
   }
 
 }
 
 resource "null_resource" "gen_ssh_config" {
 
-  count = "${var.count}"
+  count = var.count_vm
 
-  triggers {
-    template_rendered = "${data.template_file.ssh_config.*.rendered[count.index]}"
+  triggers = {
+    template_rendered = data.template_file.ssh_config.*.rendered[count.index]
   }
 
   provisioner "local-exec" {
@@ -105,7 +105,7 @@ resource "null_resource" "gen_ssh_config" {
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when = destroy
     command = "rm ./data/ssh_configs/config_${random_id.server.*.hex[count.index]}"
   }
 

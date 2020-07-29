@@ -2,15 +2,15 @@ variable "provider" {
 }
 
 variable "domains" {
-  type = "list"
+  type = list(string)
 }
 
 variable "subject_alternative_names" {
-  type = "map"
+  type = map(string)
   default = {}
 }
 
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
@@ -19,7 +19,7 @@ variable "server_url" {
 }
 
 variable "server_urls" {
-  type = "map"
+  type = map(string)
   default = {
     "staging" = "https://acme-staging-v02.api.letsencrypt.org/directory"
     "production" = "https://acme-v02.api.letsencrypt.org/directory"

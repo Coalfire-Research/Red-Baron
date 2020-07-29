@@ -3,13 +3,13 @@ terraform {
 }
 
 data "external" "get_public_ip" {
-  program = ["bash", "./scripts/get_public_ip.sh" ]
+  program = ["bash", "./data/scripts/get_public_ip.sh" ]
 }
 
 resource "aws_security_group" "phishing-server" {
   name = "phishing-server"
   description = "Security group created by Red Baron"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = var.vpc_id
 
   ingress {
     from_port = 22

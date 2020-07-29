@@ -8,8 +8,8 @@ Runs an ansible playbook on a specific resource
 module "ansible" {
   source    = "./modules/ansible"
 
-  user      = "${http_c2.ssh_user}"
-  ip        = "${http_c2.ips[0]}"
+  user      = http_c2.ssh_user
+  ip        = http_c2.ips[0]
   playbook  = "/path/to/playbook.yml"
 }
 ```

@@ -11,16 +11,16 @@ module "http_c2" {
   //count = 2
 
   // Wanna install empire?
-  //install = ["./scripts/empire.sh"]
+  //install = ["./data/scripts/empire.sh"]
 
   // Wanna install metasploit?
-  //install = ["./scripts/metasploit.sh"]
+  //install = ["./data/scripts/metasploit.sh"]
 
   // Wanna install CS?
-  //install = ["./scripts/cobaltstrike.sh"]
+  //install = ["./data/scripts/cobaltstrike.sh"]
 
   // I WANT EVERYTHING
-  //install = ["./scripts/empire.sh", "./scripts/metasploit.sh", "./scripts/cobaltstrike.sh"]
+  //install = ["./data/scripts/empire.sh", "./scripts/metasploit.sh", "./scripts/cobaltstrike.sh"]
 }
 
 module "http_rdir" {
@@ -28,7 +28,7 @@ module "http_rdir" {
 
   // 1 redirector ha. ha. ha... 2 redirectors ha. ha. ha... 3 redirectors ha. ha. ha..
   //count = 4
-  redirect_to = "${module.http_c2.ips}"
+  redirect_to = module.http_c2.ips
 
   //regions = ["TX", "SG"]
 }

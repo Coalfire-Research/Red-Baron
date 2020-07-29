@@ -3,25 +3,25 @@ terraform {
 }
 
 provider "google" {
-  project = "${var.project}"
+  project = var.project
 }
 
 resource "tls_private_key" "ssh" {
-  count = "${var.count}"
+  count = var.count_vm
   algorithm = "RSA"
   rsa_bits = 4096
 }
 
 resource "random_id" "server" {
-  count = "${var.count}"
+  count = var.count_vm
   byte_length = 4
 }
 
 resource "google_compute_instance" "phishing-server" {
-  count = "${var.count}"
-  machine_type = "${var.machine_type}"
+  count = var.count_vm
+  machine_type = var.machine_type
   name = "phishing-server-${random_id.server.*.hex[count.index]}"
-  zone = "${var.available_zones[element(var.zones, count.index)]}"
+  zone = var.available_zones[element(var.zones, count.index)]
   can_ip_forward = true
 
   boot_disk {
@@ -46,7 +46,7 @@ resource "google_compute_instance" "phishing-server" {
     connection {
       type = "ssh"
       user = "root"
-      private_key = "${tls_private_key.ssh.*.private_key_pem[count.index]}"
+      private_key = tls_private_key.ssh.*.private_key_pem[count.index]
     }
   }
 
@@ -69,25 +69,25 @@ resource "google_compute_instance" "phishing-server" {
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when = destroy
     command = "rm ./data/ssh_keys/${self.network_interface.0.access_config.0.assigned_nat_ip}*"
   }
 }
 
 resource "null_resource" "ansible_provisioner" {
-  count = "${signum(length(var.ansible_playbook)) == 1 ? var.count : 0}"
+  count = signum(length(var.ansible_playbook)) == 1 ? var.count_vm : 0
 
-  depends_on = ["google_compute_instance.phishing-server"]
+  depends_on = [google_compute_instance.phishing-server]
 
-  triggers {
-    droplet_creation = "${join("," , google_compute_instance.phishing-server.*.id)}"
-    policy_sha1 = "${sha1(file(var.ansible_playbook))}"
+  triggers = {
+    droplet_creation = join("," , google_compute_instance.phishing-server.*.id)
+    policy_sha1 = sha1(file(var.ansible_playbook))
   }
 
   provisioner "local-exec" {
     command = "ansible-playbook ${join(" ", compact(var.ansible_arguments))} --user=root --private-key=./data/ssh_keys/${google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]} -e host=${google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]} ${var.ansible_playbook}"
 
-    environment {
+    environment = {
       ANSIBLE_HOST_KEY_CHECKING = "False"
     }
   }
@@ -99,26 +99,26 @@ resource "null_resource" "ansible_provisioner" {
 
 data "template_file" "ssh_config" {
 
-  count    = "${var.count}"
+  count    = var.count_vm
 
-  template = "${file("./data/templates/ssh_config.tpl")}"
+  template = file("./data/templates/ssh_config.tpl")
 
-  depends_on = ["google_compute_instance.phishing-server"]
+  depends_on = [google_compute_instance.phishing-server]
 
-  vars {
+  vars = {
     name = "dns_c2_${google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]}"
-    hostname = "${google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]}"
+    hostname = google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]
     user = "root"
-    identityfile = "${path.root}/data/ssh_keys/${google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]}"
+    identityfile = path.root}/data/ssh_keys/${google_compute_instance.phishing-server.*.network_interface.0.access_config.0.assigned_nat_ip[count.index]
   }
 }
 
 resource "null_resource" "gen_ssh_config" {
 
-  count = "${var.count}"
+  count = var.count_vm
 
-  triggers {
-    template_rendered = "${data.template_file.ssh_config.*.rendered[count.index]}"
+  triggers = {
+    template_rendered = data.template_file.ssh_config.*.rendered[count.index]
   }
 
   provisioner "local-exec" {
@@ -126,7 +126,7 @@ resource "null_resource" "gen_ssh_config" {
   }
 
   provisioner "local-exec" {
-    when = "destroy"
+    when = destroy
     command = "rm ./data/ssh_configs/config_${random_id.server.*.hex[count.index]}"
   }
 }

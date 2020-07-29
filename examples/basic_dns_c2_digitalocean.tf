@@ -9,16 +9,16 @@ module "dns_c2" {
   //count = 2
 
   // Wanna install empire?
-  //install = ["./scripts/empire.sh"]
+  //install = ["./data/scripts/empire.sh"]
 
   // Wanna install metasploit?
-  //install = ["./scripts/metasploit.sh"]
+  //install = ["./data/scripts/metasploit.sh"]
 
   // Wanna install CS?
-  //install = ["./scripts/cobaltstrike.sh"]
+  //install = ["./data/scripts/cobaltstrike.sh"]
 
   // I WANT EVERYTHING
-  //install = ["./scripts/empire.sh", "./scripts/metasploit.sh", "./scripts/cobaltstrike.sh"]
+  //install = ["./data/scripts/empire.sh", "./scripts/metasploit.sh", "./scripts/cobaltstrike.sh"]
 }
 
 module "dns_rdir" {
@@ -27,16 +27,16 @@ module "dns_rdir" {
   // 1 redirector ha. ha. ha... 2 redirectors ha. ha. ha... 3 redirectors ha. ha. ha..
   //count = 4
 
-  redirect_to = "${module.dns_c2.ips}"
+  redirect_to = module.dns_c2.ips
 
   //regions = ["NYC1", "SGP1"]
 }
 
 // print the c2 and redirector ips to the screen all perty like when everything's done
 output "dns-c2-ips" {
-  value = "${module.dns_c2.ips}"
+  value = module.dns_c2.ips
 }
 
 output "dns-rdir-ips" {
-  value = "${module.dns_rdir.ips}"
+  value = module.dns_rdir.ips
 }

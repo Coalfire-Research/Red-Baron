@@ -1,4 +1,4 @@
-variable "count" {
+variable "count_vm" {
   default = 1
 }
 
@@ -9,13 +9,13 @@ variable "ansible_playbook" {
 
 variable "ansible_arguments" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Additional Ansible Arguments"
 }
 
 variable "ansible_vars" {
   default = []
-  type    = "list"
+  type    = list(string)
   description = "Environment variables"
 }
 
@@ -28,28 +28,28 @@ variable "project" {
 }
 
 variable "zones" {
-  type = "list"
+  type = list(string)
   default = ["Canada-1"]
 }
 
 variable "install" {
-  type = "list"
+  type = list(string)
   default = []
 }
 
 /*
 variable "install" {
-  type = "map"
+  type = map(string)
   default = {
-    "empire" = "./scripts/install_empire.sh"
-    "metasploit" = "./scripts/install_metasploit.sh"
-    "cobaltstrike" = "./scripts/install_cobalt_strike.sh"
+    "empire" = "./data/scripts/install_empire.sh"
+    "metasploit" = "./data/scripts/install_metasploit.sh"
+    "cobaltstrike" = "./data/scripts/install_cobalt_strike.sh"
   }
 }
 */
 
 variable "available_zones" {
-  type = "map"
+  type = map(string)
   default = {
     "Canada-1" = "northamerica-northeast1-a"
     "Canada-2" = "northamerica-northeast1-b"

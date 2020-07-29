@@ -17,7 +17,7 @@ module "http_rdir" {
 
   // 1 redirector ha. ha. ha... 2 redirectors ha. ha. ha... 3 redirectors ha. ha. ha...
   //count = 4
-  redirect_to = "${module.phishing_server.ips}"
+  redirect_to = module.phishing_server.ips
 
   // 1337 APT's all come from Texas and Singapore
   //regions = ["TX", "SG"]

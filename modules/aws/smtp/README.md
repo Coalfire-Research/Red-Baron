@@ -14,7 +14,7 @@ module "mail" {
     source = "./modules/aws/smtp"
     domain = "example.com"
     mx_subdomain = "mail"
-    zone_id = "${module.zone.zone_id}"
+    zone_id = module.zone.zone_id
 }
 
 output "smtp_name_servers" {
@@ -22,15 +22,15 @@ output "smtp_name_servers" {
 }
 
 output "smtp_server" {
-    value = "${module.smtp.smtp_server}"
+    value = module.smtp.smtp_server
 }
 
 output "smtp_user" {
-    value = "${module.smtp.smtp_username}"
+    value = module.smtp.smtp_username
 }
 
 output "smtp_password" {
-    value = "${module.smtp.smtp_password}"
+    value = module.smtp.smtp_password
 }
 ```
 
