@@ -1,10 +1,3 @@
-# WheelsVT Edit
-
-Added CloudFlare automation modules for DNS records and creation of redirectors, dropper, and staged payloads.
-
-
-
-
 # Red Baron
 Latest version of this project is now being maintained here: 
 
