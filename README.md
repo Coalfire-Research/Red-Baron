@@ -1,8 +1,7 @@
+# Red Baron
 Latest version of this project is now being maintained here: 
 
 https://github.com/byt3bl33d3r/Red-Baron
-
-# Red Baron
 
 <p align="center">
   <img src="https://orig00.deviantart.net/5aae/f/2016/085/0/5/bloody_baron_by_synestesi_art-d9wjp94.jpg" width="400" height="600" alt="baron"/>
